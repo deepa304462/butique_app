@@ -12,22 +12,7 @@ class AddMeasurementOrderPage extends StatefulWidget {
       _AddMeasurementOrderPageState();
 }
 
-class _AddMeasurementOrderPageState extends State<AddMeasurementOrderPage> with SingleTickerProviderStateMixin {
-
-  late TabController _tabController;
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 7, vsync: this);
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
-
+class _AddMeasurementOrderPageState extends State<AddMeasurementOrderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,474 +25,151 @@ class _AddMeasurementOrderPageState extends State<AddMeasurementOrderPage> with 
         title: Text(
           "Add Measurement",
           style: GoogleFonts.kaiseiTokumin(
-              color: Colors.black,
-              fontSize: 30,
-              fontWeight: FontWeight.w800),
-        )/*Row(
-          children: [
-            InkWell(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Container(
-                width: 60,
-                height: 60,
-                decoration: BoxDecoration(
-                    color: Colors.grey.shade200,
-                    borderRadius: BorderRadius.circular(100)),
-                child: const Icon(
-                  Icons.arrow_back,
-                  size: 28,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 50,
-            ),
-            Text(
-              "Add Measurement",
-              style: GoogleFonts.kaiseiTokumin(
-                  color: Colors.black,
-                  fontSize: 30,
-                  fontWeight: FontWeight.w800),
-            ),
-          ],
-        )*/,
+              color: Colors.black, fontSize: 30, fontWeight: FontWeight.w800),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.only(left: 15, right: 15),
         child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
-                    children: [
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 1.5,
-                        width: MediaQuery.of(context).size.width / 2,
-                        child: Image.asset(
-                          "meserment.jpeg",
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      const SizedBox(height: 20.0),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width / 2,
-                        child: _buildFormFieldWithIconForNotes(
-                          heading: 'Notes',
-                          labelText: '',
-                        ),
-                      ),
-                    ],
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                // Left side image
+                Expanded(
+                  flex: 1,
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                    child: Image.asset(
+                      "assets/meserment.jpeg",
+                      fit: BoxFit.fill,
+                    ),
                   ),
-                  const SizedBox(
-                    width: 50,
-                  ),
-
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                ),
+                const SizedBox(width: 20.0),
+                // Right side content
+                Expanded(
+                  flex: 1,
+                  child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-
-                      Row(
+                      Column(
                         children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 6,
-                            child: _buildFormFieldWithIcon(
-                              heading: 'Shoulder',
-                              labelText: '0.00',
-                            ),
-                          ),
-                          const SizedBox(width: 20.0),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 6,
-                            child: _buildFormFieldWithIcon(
-                              heading: 'Cross Back',
-                              labelText: '0.00',
-                            ),
-                          ),
+                          // Shirt section
+                          _buildSectionHeading("Shirt"),
+                          _buildTextWithLabel("L/P"),
+                          _buildTextWithLabel("L/CH"),
+                          _buildTextWithLabel("C"),
+                          _buildTextWithLabel("W"),
+                          _buildTextWithLabel("Sh"),
+                          _buildTextWithLabel("R"),
+                          _buildTextWithLabel("SL-SM ( )"),
+                          _buildTextWithLabel("E/B"),
+                          _buildTextWithLabel("3/4"),
+                          _buildTextWithLabel("( )"),
+                          _buildTextWithLabel("( ) Full"),
+                          _buildTextWithLabel("A/h"),
+                          _buildTextWithLabel("D.P."),
+                          _buildTextWithLabel("F.C."),
+                          _buildTextWithLabel("B.C."),
+                          _buildTextWithLabel("N"),
+                          _buildTextWithLabel("B.N."),
+                          _buildTextWithLabel("CK"),
+                          _buildTextWithLabel("Ghera"),
                         ],
                       ),
-                      const SizedBox(height: 20.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      Column(
                         children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 6,
-                            child: _buildFormFieldWithIcon(
-                              heading: 'Cross Front',
-                              labelText: '0.00',
-                            ),
-                          ),
-                          const SizedBox(width: 20.0),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 6,
-                            child: _buildFormFieldWithIcon(
-                              heading: 'Upper Bust',
-                              labelText: '0.00',
-                            ),
-                          ),
+                          _buildSectionHeading("Pant/Plazo"),
+                          // Pant/Plazo section
+                          _buildTextWithLabel("L"),
+                          _buildTextWithLabel("W"),
+                          _buildTextWithLabel("H"),
+                          _buildTextWithLabel("Th"),
+                          _buildTextWithLabel("K"),
+                          _buildTextWithLabel("Mori"),
                         ],
                       ),
-                      const SizedBox(height: 20.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      Column(
                         children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 6,
-                            child: _buildFormFieldWithIcon(
-                              heading: 'Chest',
-                              labelText: '0.00',
-                            ),
-                          ),
-                          const SizedBox(width: 20.0),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 6,
-                            child: _buildFormFieldWithIcon(
-                              heading: 'Below Bust',
-                              labelText: '0.00',
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 6,
-                            child: _buildFormFieldWithIcon(
-                              heading: 'Waist',
-                              labelText: '0.00',
-                            ),
-                          ),
-                          const SizedBox(width: 20.0),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 6,
-                            child: _buildFormFieldWithIcon(
-                              heading: 'Mid Waist',
-                              labelText: '0.00',
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 6,
-                            child: _buildFormFieldWithIcon(
-                              heading: 'Hip',
-                              labelText: '0.00',
-                            ),
-                          ),
-                          const SizedBox(width: 20.0),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 6,
-                            child: _buildFormFieldWithIcon(
-                              heading: 'Arm Hole',
-                              labelText: '0.00',
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 6,
-                            child: _buildFormFieldWithIcon(
-                              heading: 'Bicap Rounding',
-                              labelText: '0.00',
-                            ),
-                          ),
-                          const SizedBox(width: 20.0),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 6,
-                            child: _buildFormFieldWithIcon(
-                              heading: 'Elbow Rounding',
-                              labelText: '0.00',
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 6,
-                            child: _buildFormFieldWithIcon(
-                              heading: 'Wrist',
-                              labelText: '0.00',
-                            ),
-                          ),
-                          const SizedBox(width: 20.0),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 6,
-                            child: _buildFormFieldWithIcon(
-                              heading: 'Sleeve Length',
-                              labelText: '1/2',
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width / 6,
-                                child: _buildFormFieldWithIcon(
-                                  heading: 'Neck Depth',
-                                  labelText: 'Front',
-                                ),
-                              ),
-                              const SizedBox(width: 20.0),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width / 6,
-                                child: _buildFormFieldWithIcon(
-                                  heading: '',
-                                  labelText: 'Back',
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 6,
-                            child: _buildFormFieldWithIcon(
-                              heading: 'Yoke Length',
-                              labelText: '0.00',
-                            ),
-                          ),
-                          const SizedBox(width: 20.0),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 6,
-                            child: _buildFormFieldWithIcon(
-                              heading: 'Yoke Rounding',
-                              labelText: '0.00',
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 6,
-                            child: _buildFormFieldWithIcon(
-                              heading: 'Kurta Length',
-                              labelText: '0.00',
-                            ),
-                          ),
-                          const SizedBox(width: 20.0),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 6,
-                            child: _buildFormFieldWithIcon(
-                              heading: 'Blouse Length',
-                              labelText: '0.00',
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 6,
-                            child: _buildFormFieldWithIcon(
-                              heading: 'Peticoat Length',
-                              labelText: '0.00',
-                            ),
-                          ),
-                          const SizedBox(width: 20.0),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 6,
-                            child: _buildFormFieldWithIcon(
-                              heading: 'Waist',
-                              labelText: '0.00',
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 6,
-                            child: _buildFormFieldWithIcon(
-                              heading: 'Thigh',
-                              labelText: '0.00',
-                            ),
-                          ),
-                          const SizedBox(width: 20.0),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 6,
-                            child: _buildFormFieldWithIcon(
-                              heading: 'Knee',
-                              labelText: '0.00',
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 6,
-                            child: _buildFormFieldWithIcon(
-                              heading: 'Calf',
-                              labelText: '0.00',
-                            ),
-                          ),
-                          const SizedBox(width: 20.0),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 6,
-                            child: _buildFormFieldWithIcon(
-                              heading: 'Ankle',
-                              labelText: '0.00',
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 6,
-                            child: _buildFormFieldWithIcon(
-                              heading: 'Waist to Knee',
-                              labelText: '0.00',
-                            ),
-                          ),
-                          const SizedBox(width: 20.0),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 6,
-                            child: _buildFormFieldWithIcon(
-                              heading: 'Apex',
-                              labelText: '0.00',
-                            ),
-                          ),
+                          _buildSectionHeading("Blouse"),
+                          // Blouse section
+                          _buildTextWithLabel("L"),
+                          _buildTextWithLabel("D.P."),
+                          _buildTextWithLabel("U.C."),
+                          _buildTextWithLabel("C."),
+                          _buildTextWithLabel("W"),
+                          _buildTextWithLabel("Sh"),
+                          _buildTextWithLabel("SI. SM_"),
+                          _buildTextWithLabel("R"),
+                          _buildTextWithLabel("()"),
+                          _buildTextWithLabel("A/h"),
+                          _buildTextWithLabel("F.C"),
+                          _buildTextWithLabel("B.C"),
+                          _buildTextWithLabel("N"),
+                          _buildTextWithLabel("B.N"),
                         ],
                       ),
                     ],
-                  )
-                ],
-              ),
-              const SizedBox(height: 20.0),
-              DrawingBoardUI(),
-              const SizedBox(height: 20.0),
-              ElevatedButton(
-                  style: const ButtonStyle(
-                      backgroundColor:
-                          MaterialStatePropertyAll(Color(0xff1676F3)),
-                      fixedSize: MaterialStatePropertyAll(Size(
-                        330,
-                        50,
-                      ))),
-                  onPressed: () {
-                    //todo implement on tap
-                  },
-                  child: Text(
-                    "Generate Measurement / Print",
-                    style: GoogleFonts.poppins(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500),
-                  )),
-              const SizedBox(height: 20.0),
-            ],
-          ),
+                  ),
+                ),
+              ],
+            )
+          ],
+        )),
+      ),
+    );
+  }
+
+  Widget _buildSectionHeading(String heading) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      child: Text(
+        heading,
+        style: const TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
         ),
       ),
     );
   }
 
-  Widget _buildFormFieldWithIcon({
-    required String labelText,
-    required String heading,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
+  Widget _buildTextWithLabel(String labelText) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: SizedBox(
+        width: 150,
+        child: Row(
           children: [
             Text(
-              heading,
+              labelText,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
             ),
-            const SizedBox(width: 2.0), // Adjust spacing as needed
-          ],
-        ),
-        const SizedBox(height: 5.0), // Adjust spacing as needed
-        TextFormField(
-          inputFormatters: [DoubleInputFormatter()],
-          keyboardType: TextInputType.number,
-          decoration: InputDecoration(
-            labelText: labelText,
-            floatingLabelBehavior:
-                FloatingLabelBehavior.never, // Icon color is black
-            border: const OutlineInputBorder(),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildFormFieldWithIconForNotes({
-    required String labelText,
-    required String heading,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Text(
-              heading,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
+            const SizedBox(width: 10.0),
+            Expanded(
+              child: TextFormField(
+                inputFormatters: [DoubleInputFormatter()],
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  labelText: '0.00',
+                  floatingLabelBehavior:
+                      FloatingLabelBehavior.never, // Icon color is black
+                  border: OutlineInputBorder(),
+                ),
               ),
             ),
-            const SizedBox(width: 2.0), // Adjust spacing as needed
           ],
         ),
-        const SizedBox(height: 5.0), // Adjust spacing as needed
-        TextFormField(
-          maxLines: 10,
-          keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-            labelText: labelText,
-            floatingLabelBehavior:
-                FloatingLabelBehavior.never, // Icon color is black
-            border: const OutlineInputBorder(),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }
@@ -535,6 +197,8 @@ class DoubleInputFormatter extends TextInputFormatter {
 }
 
 class DrawingBoardUI extends StatelessWidget {
+  const DrawingBoardUI({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -552,7 +216,7 @@ class DrawingBoardUI extends StatelessWidget {
             child: Container(
               width: 20,
               height: 20,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.red, // Color of the first dot
                 shape: BoxShape.circle,
               ),
@@ -564,7 +228,7 @@ class DrawingBoardUI extends StatelessWidget {
             child: Container(
               width: 20,
               height: 20,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.green, // Color of the second dot
                 shape: BoxShape.circle,
               ),
@@ -576,7 +240,7 @@ class DrawingBoardUI extends StatelessWidget {
             child: Container(
               width: 20,
               height: 20,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.blue, // Color of the third dot
                 shape: BoxShape.circle,
               ),
@@ -588,7 +252,7 @@ class DrawingBoardUI extends StatelessWidget {
             child: Container(
               width: 20,
               height: 20,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.black, // Color of the fourth dot
                 shape: BoxShape.circle,
               ),
@@ -601,14 +265,14 @@ class DrawingBoardUI extends StatelessWidget {
             child: Container(
               width: 20,
               height: 20,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.yellow, // Color of the round shape
                 shape: BoxShape.circle,
               ),
             ),
           ),
           // Delete icon
-          Positioned(
+          const Positioned(
             top: 10,
             left: 160,
             child: Icon(
@@ -617,7 +281,7 @@ class DrawingBoardUI extends StatelessWidget {
             ),
           ),
           // Undo icon
-          Positioned(
+          const Positioned(
             top: 10,
             left: 190,
             child: Icon(
@@ -626,7 +290,7 @@ class DrawingBoardUI extends StatelessWidget {
             ),
           ),
           // Redo icon
-          Positioned(
+          const Positioned(
             top: 10,
             left: 220,
             child: Icon(
@@ -635,7 +299,7 @@ class DrawingBoardUI extends StatelessWidget {
             ),
           ),
           // Pencil icon
-          Positioned(
+          const Positioned(
             top: 10,
             left: 250,
             child: Icon(
