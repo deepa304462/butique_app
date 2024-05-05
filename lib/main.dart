@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:lottie/lottie.dart';
 
+import 'add_measurement_order_page.dart';
 import 'home_page.dart';
 
 void main() {
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.yellow),
         useMaterial3: true,
       ),
-      home:  AddMeasurementNew(""),
+      home: AddMeasurementOrderPage(""),
     );
   }
 }
@@ -42,7 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => AddMeasurementNew("")),
+        MaterialPageRoute(builder: (context) => AddMeasurementOrderPage("")),
       );
     });
   }
@@ -55,9 +56,6 @@ class _SplashScreenState extends State<SplashScreen> {
         width: MediaQuery.of(context).size.width,
         color: Colors.pink.shade500,
       )
-
-
-
     );
   }
 }
