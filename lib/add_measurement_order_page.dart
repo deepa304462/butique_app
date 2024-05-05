@@ -1,3 +1,4 @@
+import 'package:butique_app/utils/painter_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,10 +18,9 @@ class _AddMeasurementOrderPageState extends State<AddMeasurementOrderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
       appBar: AppBar(
-        toolbarHeight: 100,
         iconTheme: const IconThemeData(color: Colors.black),
         backgroundColor: Colors.white,
         title: Text(
@@ -28,6 +28,11 @@ class _AddMeasurementOrderPageState extends State<AddMeasurementOrderPage> {
           style: GoogleFonts.kaiseiTokumin(
               color: Colors.black, fontSize: 30, fontWeight: FontWeight.w800),
         ),
+        actions: [
+          TextButton(onPressed: (){}, child: Text("Save",style: TextStyle(
+            fontSize: 18
+          ),))
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.only(left: 15, right: 15),
@@ -55,104 +60,93 @@ class _AddMeasurementOrderPageState extends State<AddMeasurementOrderPage> {
                 // Right side content
                 Expanded(
                   flex: 1,
-                  child: Container(
-                    padding: const EdgeInsets.all(12.0),
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: Colors.indigo.shade900, width: 2)),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                  child: Table(
+                    defaultColumnWidth: const FixedColumnWidth(120.0),
+                    border: TableBorder.all(
+                        color: Colors.indigo.shade900,
+                        style: BorderStyle.solid,
+                        width: 2),
+                    children: [
+                      TableRow( children: [
+                        Column(children:[_buildSectionHeading("Shirt")]),
+                        Column(children:[_buildSectionHeading("Pant/Plazo")]),
+                        Column(children:[_buildSectionHeading("Blouse")]),
+                      ]),
+                       TableRow(children: [
+                        Column(children:[_buildTextWithLabel("L/P"),
+                          _buildTextWithLabel("L/CH"),
+                          _buildTextWithLabel("C"),
+                          _buildTextWithLabel("W"),
+                          _buildTextWithLabel("Sh"),
+                          _buildTextWithLabel("R"),
+                          _buildTextWithLabel("SL-SM ( )"),
+                          _buildTextWithLabel("E/B"),
+                          _buildTextWithLabel("3/4"),
+                          _buildTextWithLabel("( )"),
+                          _buildTextWithLabel("( ) Full"),
+                          _buildTextWithLabel("A/h"),
+                          _buildTextWithLabel("D.P."),
+                          _buildTextWithLabel("F.C."),
+                          _buildTextWithLabel("B.C."),
+                          _buildTextWithLabel("N"),
+                          _buildTextWithLabel("B.N."),
+                          _buildTextWithLabel("CK"),
+                          _buildTextWithLabel("Ghera"),]),
+                        Column(children:[Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Shirt section
-                            _buildSectionHeading("Shirt"),
-                            _buildTextWithLabel("L/P"),
-                            _buildTextWithLabel("L/CH"),
-                            _buildTextWithLabel("C"),
-                            _buildTextWithLabel("W"),
-                            _buildTextWithLabel("Sh"),
-                            _buildTextWithLabel("R"),
-                            _buildTextWithLabel("SL-SM ( )"),
-                            _buildTextWithLabel("E/B"),
-                            _buildTextWithLabel("3/4"),
-                            _buildTextWithLabel("( )"),
-                            _buildTextWithLabel("( ) Full"),
-                            _buildTextWithLabel("A/h"),
-                            _buildTextWithLabel("D.P."),
-                            _buildTextWithLabel("F.C."),
-                            _buildTextWithLabel("B.C."),
-                            _buildTextWithLabel("N"),
-                            _buildTextWithLabel("B.N."),
-                            _buildTextWithLabel("CK"),
-                            _buildTextWithLabel("Ghera"),
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            _buildSectionHeading("Pant/Plazo"),
-                            // Pant/Plazo section
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                _buildTextWithLabel("L"),
-                                _buildTextWithLabel("W"),
-                                _buildTextWithLabel("H"),
-                                _buildTextWithLabel("Th"),
-                                _buildTextWithLabel("K"),
-                                _buildTextWithLabel("Mori"),
-                                _buildSectionHeading("SALWAR"),
-                                _buildTextWithLabel("L"),
-                                _buildTextWithLabel("M"),
-                                _buildTextWithLabel("W"),
-                                _buildTextWithLabel("H"),
-                                _buildSectionHeading("CHURIDAR"),
-                                _buildTextWithLabel("L"),
-                                _buildTextWithLabel("W"),
-                                _buildTextWithLabel("Th"),
-                                _buildTextWithLabel("K"),
-                                _buildTextWithLabel("Mori"),
-                                _buildSectionHeading("Lehnga & Salwar"),
-                                _buildTextWithLabel("L"),
-                                _buildTextWithLabel("W"),
-                                _buildTextWithLabel("H"),
-                                _buildSectionHeading("Gown or Frock"),
-                                _buildTextWithLabel("L"),
-                                _buildTextWithLabel("B.L"),
-                              ],
-                            )
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            _buildSectionHeading("Blouse"),
-                            // Blouse section
                             _buildTextWithLabel("L"),
-                            _buildTextWithLabel("D.P."),
-                            _buildTextWithLabel("U.C."),
-                            _buildTextWithLabel("C."),
                             _buildTextWithLabel("W"),
-                            _buildTextWithLabel("Sh"),
-                            _buildTextWithLabel("SI. SM_"),
-                            _buildTextWithLabel("R"),
-                            _buildTextWithLabel("()"),
-                            _buildTextWithLabel("A/h"),
-                            _buildTextWithLabel("F.C"),
-                            _buildTextWithLabel("B.C"),
-                            _buildTextWithLabel("N"),
-                            _buildTextWithLabel("B.N"),
+                            _buildTextWithLabel("H"),
+                            _buildTextWithLabel("Th"),
+                            _buildTextWithLabel("K"),
+                            _buildTextWithLabel("Mori"),
+                            _buildSectionHeading("SALWAR"),
+                            _buildTextWithLabel("L"),
+                            _buildTextWithLabel("M"),
+                            _buildTextWithLabel("W"),
+                            _buildTextWithLabel("H"),
+                            _buildSectionHeading("CHURIDAR"),
+                            _buildTextWithLabel("L"),
+                            _buildTextWithLabel("W"),
+                            _buildTextWithLabel("Th"),
+                            _buildTextWithLabel("K"),
+                            _buildTextWithLabel("Mori"),
+                            _buildSectionHeading("Lehnga & Salwar"),
+                            _buildTextWithLabel("L"),
+                            _buildTextWithLabel("W"),
+                            _buildTextWithLabel("H"),
+                            _buildSectionHeading("Gown or Frock"),
+                            _buildTextWithLabel("L"),
+                            _buildTextWithLabel("B.L"),
                           ],
-                        ),
-                      ],
-                    ),
+                        )]),
+                        Column(children:[
+                          _buildTextWithLabel("L"),
+                          _buildTextWithLabel("D.P."),
+                          _buildTextWithLabel("U.C."),
+                          _buildTextWithLabel("C."),
+                          _buildTextWithLabel("W"),
+                          _buildTextWithLabel("Sh"),
+                          _buildTextWithLabel("SI. SM_"),
+                          _buildTextWithLabel("R"),
+                          _buildTextWithLabel("()"),
+                          _buildTextWithLabel("A/h"),
+                          _buildTextWithLabel("F.C"),
+                          _buildTextWithLabel("B.C"),
+                          _buildTextWithLabel("N"),
+                          _buildTextWithLabel("B.N"),
+                          RemarkTextField()]),
+                      ]),
+                    ],
                   ),
                 ),
               ],
-            )
+            ),
+            const SizedBox(height: 20.0),
+             SizedBox(
+              height: MediaQuery.of(context).size.height-100,
+                child: const PainterPage( title: '',))
           ],
         )),
       ),
@@ -232,119 +226,30 @@ class DoubleInputFormatter extends TextInputFormatter {
   }
 }
 
-class DrawingBoardUI extends StatelessWidget {
-  const DrawingBoardUI({super.key});
+class RemarkTextField extends StatefulWidget {
+  @override
+  _RemarkTextFieldState createState() => _RemarkTextFieldState();
+}
+
+class _RemarkTextFieldState extends State<RemarkTextField> {
+  final TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 350,
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey), // Outline with gray border
-      ),
-      child: Stack(
-        children: [
-          // Four colored dots
-          Positioned(
-            top: 10,
-            left: 10,
-            child: Container(
-              width: 20,
-              height: 20,
-              decoration: const BoxDecoration(
-                color: Colors.red, // Color of the first dot
-                shape: BoxShape.circle,
-              ),
-            ),
-          ),
-          Positioned(
-            top: 10,
-            left: 40,
-            child: Container(
-              width: 20,
-              height: 20,
-              decoration: const BoxDecoration(
-                color: Colors.green, // Color of the second dot
-                shape: BoxShape.circle,
-              ),
-            ),
-          ),
-          Positioned(
-            top: 10,
-            left: 70,
-            child: Container(
-              width: 20,
-              height: 20,
-              decoration: const BoxDecoration(
-                color: Colors.blue, // Color of the third dot
-                shape: BoxShape.circle,
-              ),
-            ),
-          ),
-          Positioned(
-            top: 10,
-            left: 100,
-            child: Container(
-              width: 20,
-              height: 20,
-              decoration: const BoxDecoration(
-                color: Colors.black, // Color of the fourth dot
-                shape: BoxShape.circle,
-              ),
-            ),
-          ),
-          // Round shape
-          Positioned(
-            top: 10,
-            left: 130,
-            child: Container(
-              width: 20,
-              height: 20,
-              decoration: const BoxDecoration(
-                color: Colors.yellow, // Color of the round shape
-                shape: BoxShape.circle,
-              ),
-            ),
-          ),
-          // Delete icon
-          const Positioned(
-            top: 10,
-            left: 160,
-            child: Icon(
-              Icons.delete,
-              size: 30,
-            ),
-          ),
-          // Undo icon
-          const Positioned(
-            top: 10,
-            left: 190,
-            child: Icon(
-              Icons.edit,
-              size: 30,
-            ),
-          ),
-          // Redo icon
-          const Positioned(
-            top: 10,
-            left: 220,
-            child: Icon(
-              Icons.undo,
-              size: 30,
-            ),
-          ),
-          // Pencil icon
-          const Positioned(
-            top: 10,
-            left: 250,
-            child: Icon(
-              Icons.redo,
-              size: 30,
-            ),
-          ),
-        ],
+    return TextField(
+      controller: _controller,
+      maxLines: null, // Allows unlimited lines
+      keyboardType: TextInputType.multiline,
+      decoration: const InputDecoration(
+        hintText: 'Enter your remark here...',
+        border: OutlineInputBorder(),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 }
