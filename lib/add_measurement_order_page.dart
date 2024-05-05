@@ -136,7 +136,23 @@ class _AddMeasurementOrderPageState extends State<AddMeasurementOrderPage> {
                           _buildTextWithLabel("B.C"),
                           _buildTextWithLabel("N"),
                           _buildTextWithLabel("B.N"),
-                          RemarkTextField()]),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: Text(
+                                "Remark",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.indigo.shade900,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: RemarkTextField(),
+                          )]),
                       ]),
                     ],
                   ),
@@ -240,9 +256,13 @@ class _RemarkTextFieldState extends State<RemarkTextField> {
       controller: _controller,
       maxLines: null, // Allows unlimited lines
       keyboardType: TextInputType.multiline,
-      decoration: const InputDecoration(
-        hintText: 'Enter your remark here...',
-        border: OutlineInputBorder(),
+      decoration: InputDecoration(
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.indigo.shade900),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.indigo.shade900),
+        ),
       ),
     );
   }
