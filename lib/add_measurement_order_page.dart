@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -32,7 +33,7 @@ class _AddMeasurementOrderPageState extends State<AddMeasurementOrderPage> {
         padding: const EdgeInsets.only(left: 15, right: 15),
         child: SingleChildScrollView(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
@@ -54,68 +55,100 @@ class _AddMeasurementOrderPageState extends State<AddMeasurementOrderPage> {
                 // Right side content
                 Expanded(
                   flex: 1,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        children: [
-                          // Shirt section
-                          _buildSectionHeading("Shirt"),
-                          _buildTextWithLabel("L/P"),
-                          _buildTextWithLabel("L/CH"),
-                          _buildTextWithLabel("C"),
-                          _buildTextWithLabel("W"),
-                          _buildTextWithLabel("Sh"),
-                          _buildTextWithLabel("R"),
-                          _buildTextWithLabel("SL-SM ( )"),
-                          _buildTextWithLabel("E/B"),
-                          _buildTextWithLabel("3/4"),
-                          _buildTextWithLabel("( )"),
-                          _buildTextWithLabel("( ) Full"),
-                          _buildTextWithLabel("A/h"),
-                          _buildTextWithLabel("D.P."),
-                          _buildTextWithLabel("F.C."),
-                          _buildTextWithLabel("B.C."),
-                          _buildTextWithLabel("N"),
-                          _buildTextWithLabel("B.N."),
-                          _buildTextWithLabel("CK"),
-                          _buildTextWithLabel("Ghera"),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          _buildSectionHeading("Pant/Plazo"),
-                          // Pant/Plazo section
-                          _buildTextWithLabel("L"),
-                          _buildTextWithLabel("W"),
-                          _buildTextWithLabel("H"),
-                          _buildTextWithLabel("Th"),
-                          _buildTextWithLabel("K"),
-                          _buildTextWithLabel("Mori"),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          _buildSectionHeading("Blouse"),
-                          // Blouse section
-                          _buildTextWithLabel("L"),
-                          _buildTextWithLabel("D.P."),
-                          _buildTextWithLabel("U.C."),
-                          _buildTextWithLabel("C."),
-                          _buildTextWithLabel("W"),
-                          _buildTextWithLabel("Sh"),
-                          _buildTextWithLabel("SI. SM_"),
-                          _buildTextWithLabel("R"),
-                          _buildTextWithLabel("()"),
-                          _buildTextWithLabel("A/h"),
-                          _buildTextWithLabel("F.C"),
-                          _buildTextWithLabel("B.C"),
-                          _buildTextWithLabel("N"),
-                          _buildTextWithLabel("B.N"),
-                        ],
-                      ),
-                    ],
+                  child: Container(
+                    padding: const EdgeInsets.all(12.0),
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: Colors.indigo.shade900, width: 2)),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            // Shirt section
+                            _buildSectionHeading("Shirt"),
+                            _buildTextWithLabel("L/P"),
+                            _buildTextWithLabel("L/CH"),
+                            _buildTextWithLabel("C"),
+                            _buildTextWithLabel("W"),
+                            _buildTextWithLabel("Sh"),
+                            _buildTextWithLabel("R"),
+                            _buildTextWithLabel("SL-SM ( )"),
+                            _buildTextWithLabel("E/B"),
+                            _buildTextWithLabel("3/4"),
+                            _buildTextWithLabel("( )"),
+                            _buildTextWithLabel("( ) Full"),
+                            _buildTextWithLabel("A/h"),
+                            _buildTextWithLabel("D.P."),
+                            _buildTextWithLabel("F.C."),
+                            _buildTextWithLabel("B.C."),
+                            _buildTextWithLabel("N"),
+                            _buildTextWithLabel("B.N."),
+                            _buildTextWithLabel("CK"),
+                            _buildTextWithLabel("Ghera"),
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            _buildSectionHeading("Pant/Plazo"),
+                            // Pant/Plazo section
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                _buildTextWithLabel("L"),
+                                _buildTextWithLabel("W"),
+                                _buildTextWithLabel("H"),
+                                _buildTextWithLabel("Th"),
+                                _buildTextWithLabel("K"),
+                                _buildTextWithLabel("Mori"),
+                                _buildSectionHeading("SALWAR"),
+                                _buildTextWithLabel("L"),
+                                _buildTextWithLabel("M"),
+                                _buildTextWithLabel("W"),
+                                _buildTextWithLabel("H"),
+                                _buildSectionHeading("CHURIDAR"),
+                                _buildTextWithLabel("L"),
+                                _buildTextWithLabel("W"),
+                                _buildTextWithLabel("Th"),
+                                _buildTextWithLabel("K"),
+                                _buildTextWithLabel("Mori"),
+                                _buildSectionHeading("Lehnga & Salwar"),
+                                _buildTextWithLabel("L"),
+                                _buildTextWithLabel("W"),
+                                _buildTextWithLabel("H"),
+                                _buildSectionHeading("Gown or Frock"),
+                                _buildTextWithLabel("L"),
+                                _buildTextWithLabel("B.L"),
+                              ],
+                            )
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            _buildSectionHeading("Blouse"),
+                            // Blouse section
+                            _buildTextWithLabel("L"),
+                            _buildTextWithLabel("D.P."),
+                            _buildTextWithLabel("U.C."),
+                            _buildTextWithLabel("C."),
+                            _buildTextWithLabel("W"),
+                            _buildTextWithLabel("Sh"),
+                            _buildTextWithLabel("SI. SM_"),
+                            _buildTextWithLabel("R"),
+                            _buildTextWithLabel("()"),
+                            _buildTextWithLabel("A/h"),
+                            _buildTextWithLabel("F.C"),
+                            _buildTextWithLabel("B.C"),
+                            _buildTextWithLabel("N"),
+                            _buildTextWithLabel("B.N"),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -131,10 +164,10 @@ class _AddMeasurementOrderPageState extends State<AddMeasurementOrderPage> {
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Text(
         heading,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold,
-          color: Colors.black,
+          color: Colors.indigo.shade900,
         ),
       ),
     );
@@ -144,26 +177,29 @@ class _AddMeasurementOrderPageState extends State<AddMeasurementOrderPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5.0),
       child: SizedBox(
-        width: 150,
+        width: 180,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               labelText,
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: Colors.indigo.shade900,
               ),
             ),
-            const SizedBox(width: 10.0),
-            Expanded(
+            SizedBox(
+              width: 100,
               child: TextFormField(
                 inputFormatters: [DoubleInputFormatter()],
                 keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: '0.00',
-                  floatingLabelBehavior:
-                      FloatingLabelBehavior.never, // Icon color is black
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.indigo.shade900),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.indigo.shade900),
+                  ),
                 ),
               ),
             ),
