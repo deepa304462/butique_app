@@ -1,5 +1,9 @@
+
+
 import 'package:butique_app/add_measurement_order_page.dart';
 import 'package:butique_app/add_new_customer.dart';
+import 'package:butique_app/utils/update_measurement.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -13,7 +17,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<String> customerDetailList = List.generate(50, (index) => 'Vaibhav $index');
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+
+
+  final List<String> customerDetailList =
+      List.generate(50, (index) => 'Vaibhav $index');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +56,10 @@ class _HomePageState extends State<HomePage> {
                           62,
                         ))),
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (_)=>const AddNewCustomer()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const AddNewCustomer()));
                     },
                     child: Row(
                       children: [
@@ -95,41 +111,75 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: ListView.builder(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          itemCount: customerDetailList.length,
-          itemBuilder: (context, index) {
-            // Check if the current item is the last item
-            final isLastItem = index == customerDetailList.length - 1;
+        child: StreamBuilder<QuerySnapshot>(
+          stream:
+              FirebaseFirestore.instance.collection('customers').snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              // Corrected condition
+              print('Error: ${snapshot.error}');
+              return Text('Error: ${snapshot.error}');
+            }
 
-            return Column(
-              children: [
-                ListTile(
-                  title: Text(customerDetailList[index]),
-                  titleTextStyle: GoogleFonts.kaiseiTokumin(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold),
-                  subtitle: const Text("G-803 Gls avenue 51 sec 92"),
-                  subtitleTextStyle: GoogleFonts.poppins(
-                    color: Colors.grey.shade700,
-                    fontSize: 16,
-                  ),
-                  trailing: const Text("9068064102"),
-                  leadingAndTrailingTextStyle: GoogleFonts.poppins(
-                    color: Colors.grey.shade700,
-                    fontSize: 16,
-                    fontWeight:FontWeight.w500
-                  ),
-                  onTap: () {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator(); // Or any loading indicator
+            }
 
-                    Navigator.push(context, MaterialPageRoute(builder: (_)=>AddMeasurementNew(customerDetailList[index])));
-                  },
-                ),
-                // Add a divider if the current item is not the last item
-                if (!isLastItem) const Divider(), // Add a Divider
-              ],
+            final List<DocumentSnapshot> documents =
+                snapshot.data!.docs; // List of documents
+
+            return ListView.builder(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: documents.length,
+              itemBuilder: (context, index) {
+                final isLastItem =
+                    index == documents.length - 1; // Corrected index
+                final DocumentSnapshot document = documents[index];
+                final data = document.data() as Map<String, dynamic>;
+
+                return Column(
+                  children: [
+                    ListTile(
+                      title: Text(data['name']),
+                      titleTextStyle: GoogleFonts.kaiseiTokumin(
+                          color: Colors.black,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),
+                      subtitle: Text(data['address']),
+                      subtitleTextStyle: GoogleFonts.poppins(
+                        color: Colors.grey.shade700,
+                        fontSize: 16,
+                      ),
+                      trailing: Text(data['phone']),
+                      leadingAndTrailingTextStyle: GoogleFonts.poppins(
+                          color: Colors.grey.shade700,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500),
+                      onTap: () async  {
+                        final snapshot = await FirebaseFirestore.instance
+                            .collection("customersMeasurements").where("customerId",isEqualTo: document.id).get();
+
+                        if (snapshot.docs.isNotEmpty) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) =>
+                                      UpdateMeasurementOrderPage(document, index, )));
+                        }else{
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) =>
+                                      AddMeasurementOrderPage(document, index)));
+                        }
+
+                      },
+                    ),
+                    if (!isLastItem) const Divider(), // Add a Divider
+                  ],
+                );
+              },
             );
           },
         ),

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "199360755371",
+    "project_id": "butique-app",
+    "storage_bucket": "butique-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:199360755371:android:a6ed4d354958c8a61529ee",
+        "android_client_info": {
+          "package_name": "com.example.butique_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQWdQ5Tc30ouuXa9nVU-8mgod9dupr8nA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
