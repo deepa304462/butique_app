@@ -40,8 +40,8 @@ class _AddMeasurementOrderPageState extends State<AddMeasurementOrderPage> {
               color: Colors.black, fontSize: 30, fontWeight: FontWeight.w800),
         ),
         actions: [
-         _isLoading ? Center(child: const CircularProgressIndicator(color: Colors.blueAccent,)) : ElevatedButton(
-              style: ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.blueAccent)),
+         _isLoading ? const Center(child: CircularProgressIndicator(color: Colors.blueAccent,)) : ElevatedButton(
+              style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.blueAccent)),
               onPressed: (){
             addData();
           }, child: Text("Save",style: GoogleFonts.inter(
@@ -173,8 +173,8 @@ class _AddMeasurementOrderPageState extends State<AddMeasurementOrderPage> {
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
                             child: RemarkTextField(),
                           )]),
                       ]),
@@ -199,7 +199,7 @@ class _AddMeasurementOrderPageState extends State<AddMeasurementOrderPage> {
       child: Text(
         heading,
         style: TextStyle(
-          fontSize: 20,
+          fontSize: 12,
           fontWeight: FontWeight.bold,
           color: Colors.indigo.shade900,
         ),
@@ -211,7 +211,7 @@ class _AddMeasurementOrderPageState extends State<AddMeasurementOrderPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5.0),
       child: SizedBox(
-        width: 180,
+        width: 80,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -223,7 +223,7 @@ class _AddMeasurementOrderPageState extends State<AddMeasurementOrderPage> {
               ),
             ),
             SizedBox(
-              width: 100,
+              width: 80,
               child: TextFormField(
                 controller: controller,
                // inputFormatters: [DoubleInputFormatter()],
@@ -344,7 +344,7 @@ class _AddMeasurementOrderPageState extends State<AddMeasurementOrderPage> {
         setState(() {
           _isLoading = false;
         });
-        Navigator.push(context, MaterialPageRoute(builder: (_)=>HomePage()));
+        Navigator.push(context, MaterialPageRoute(builder: (_)=>const HomePage()));
 
         print('Data added successfully!');
 
@@ -380,6 +380,8 @@ class DoubleInputFormatter extends TextInputFormatter {
 }
 
 class RemarkTextField extends StatefulWidget {
+  const RemarkTextField({super.key});
+
   @override
   _RemarkTextFieldState createState() => _RemarkTextFieldState();
 }

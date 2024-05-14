@@ -1,4 +1,3 @@
-
 import 'package:butique_app/measurements_controller.dart';
 import 'package:butique_app/models/add_customer_measurments_model.dart';
 import 'package:butique_app/models/add_cutomer_model.dart';
@@ -13,7 +12,6 @@ class UpdateMeasurementOrderPage extends StatefulWidget {
   final DocumentSnapshot<Object?> document;
   final int index;
 
-
   const UpdateMeasurementOrderPage(this.document, this.index, {super.key});
 
   @override
@@ -25,7 +23,6 @@ class _UpdateMeasurementOrderPageState
     extends State<UpdateMeasurementOrderPage> {
   final MeasurementsController measurementsController =
       MeasurementsController();
-
 
   bool _isLoading = false;
   String measurementId = "";
@@ -56,7 +53,7 @@ class _UpdateMeasurementOrderPageState
                   onPressed: () {
                     final id = widget.document['id'];
                     update(id);
-                   // update(id);
+                    // update(id);
                   },
                   child: Text(
                     "Save",
@@ -68,9 +65,12 @@ class _UpdateMeasurementOrderPageState
         ],
       ),
       body: Padding(
-          padding: const EdgeInsets.only(left: 15, right: 15),
+          padding: const EdgeInsets.all(8.0), // Adjust padding here
           child: StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance.collection('customersMeasurements').where('customerId', isEqualTo: widget.document.id).snapshots(),
+            stream: FirebaseFirestore.instance
+                .collection('customersMeasurements')
+                .where('customerId', isEqualTo: widget.document.id)
+                .snapshots(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
@@ -78,7 +78,8 @@ class _UpdateMeasurementOrderPageState
                 return Center(child: Text('Error: ${snapshot.error}'));
               } else {
                 DocumentSnapshot document = snapshot.data!.docs.first;
-                final measurement = AddMeasurementsModel.fromMap(document.data() as Map<String, dynamic>);
+                final measurement = AddMeasurementsModel.fromMap(
+                    document.data() as Map<String, dynamic>);
                 measurementId = measurement.id ?? '';
                 measurementsController.lpShirtController.text =
                     measurement.lpShirt.toString();
@@ -205,23 +206,19 @@ class _UpdateMeasurementOrderPageState
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        // Left side image
-                        Expanded(
-                          flex: 1,
-                          child: SizedBox(
-                            height: MediaQuery.of(context).size.height,
-                            child: Image.network(
-                              widget.document['old_measurement'],
-                              fit: BoxFit.fill,
-                            ),
+                        /*SizedBox(
+                          height: 200,
+                          child: Image.network(
+                            widget.document['old_measurement'],
+                            fit: BoxFit.fill,
                           ),
-                        ),
-                        const SizedBox(width: 20.0),
+                        ),*/
+                        const SizedBox(width: 10.0),
                         // Right side content
                         Expanded(
                           flex: 1,
                           child: Table(
-                            defaultColumnWidth: const FixedColumnWidth(120.0),
+                            defaultColumnWidth: const FixedColumnWidth(270.0),
                             border: TableBorder.all(
                                 color: Colors.indigo.shade900,
                                 style: BorderStyle.solid,
@@ -237,253 +234,300 @@ class _UpdateMeasurementOrderPageState
                                     children: [_buildSectionHeading("Blouse")]),
                               ]),
                               TableRow(children: [
-                                Column(children: [
-                                  _buildTextWithLabel("L/P",
-                                      measurementsController.lpShirtController),
-                                  _buildTextWithLabel("L/S",
-                                      measurementsController.lsShirtController),
-                                  _buildTextWithLabel(
-                                      "L/CH",
-                                      measurementsController
-                                          .lchShirtController),
-                                  _buildTextWithLabel("U.C.",
-                                      measurementsController.ucShirtController),
-                                  _buildTextWithLabel("C",
-                                      measurementsController.cShirtController),
-                                  _buildTextWithLabel("W",
-                                      measurementsController.wShirtController),
-                                  _buildTextWithLabel("H",
-                                      measurementsController.hShirtController),
-                                  _buildTextWithLabel("Sh",
-                                      measurementsController.shShirtController),
-                                  _buildTextWithLabel(
-                                      "SL-SM (L )",
-                                      measurementsController
-                                          .slSmShirtLController),
-                                  _buildTextWithLabel(
-                                      "SL-SM (R )",
-                                      measurementsController
-                                          .slSmShirtRController),
-                                  _buildTextWithLabel(
-                                      "E/B(L)",
-                                      measurementsController
-                                          .ebShirtLController),
-                                  _buildTextWithLabel(
-                                      "E/B(R)",
-                                      measurementsController
-                                          .ebShirtRController),
-                                  _buildTextWithLabel(
-                                      "3/4(L)",
-                                      measurementsController
-                                          .tfShirtLController),
-                                  _buildTextWithLabel(
-                                      "3/4(R)",
-                                      measurementsController
-                                          .tfShirtRController),
-                                  _buildTextWithLabel(
-                                      "Full",
-                                      measurementsController
-                                          .fullShirtController),
-                                  _buildTextWithLabel("A/h",
-                                      measurementsController.ahShirtController),
-                                  _buildTextWithLabel("A",
-                                      measurementsController.aShirtController),
-                                  _buildTextWithLabel("D.P.",
-                                      measurementsController.dpShirtController),
-                                  _buildTextWithLabel("F.C.",
-                                      measurementsController.fcShirtController),
-                                  _buildTextWithLabel("B.C.",
-                                      measurementsController.bcShirtController),
-                                  _buildTextWithLabel("N",
-                                      measurementsController.nShirtController),
-                                  _buildTextWithLabel("B.N.",
-                                      measurementsController.bnShirtController),
-                                  _buildTextWithLabel("CK",
-                                      measurementsController.ckShirtController),
-                                  _buildTextWithLabel(
-                                      "Ghera",
-                                      measurementsController
-                                          .gheraShirtController),
-                                ]),
-                                Column(children: [
-                                  Column(
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Column(children: [
+                                      _buildTextWithLabel(
+                                          "L/P",
+                                          measurementsController
+                                              .lpShirtController),
+                                      _buildTextWithLabel(
+                                          "L/S",
+                                          measurementsController
+                                              .lsShirtController),
+                                      _buildTextWithLabel(
+                                          "L/CH",
+                                          measurementsController
+                                              .lchShirtController),
+                                      _buildTextWithLabel(
+                                          "U.C.",
+                                          measurementsController
+                                              .ucShirtController),
+                                      _buildTextWithLabel(
+                                          "C",
+                                          measurementsController
+                                              .cShirtController),
+                                      _buildTextWithLabel(
+                                          "W",
+                                          measurementsController
+                                              .wShirtController),
+                                      _buildTextWithLabel(
+                                          "H",
+                                          measurementsController
+                                              .hShirtController),
+                                      _buildTextWithLabel(
+                                          "Sh",
+                                          measurementsController
+                                              .shShirtController),
+                                      _buildTextWithLabel(
+                                          "SL-SM (L )",
+                                          measurementsController
+                                              .slSmShirtLController),
+                                      _buildTextWithLabel(
+                                          "SL-SM (R )",
+                                          measurementsController
+                                              .slSmShirtRController),
+                                      _buildTextWithLabel(
+                                          "E/B(L)",
+                                          measurementsController
+                                              .ebShirtLController),
+                                      _buildTextWithLabel(
+                                          "E/B(R)",
+                                          measurementsController
+                                              .ebShirtRController),
+                                    ]),
+                                    Column(children: [
+                                      _buildTextWithLabel(
+                                          "3/4(L)",
+                                          measurementsController
+                                              .tfShirtLController),
+                                      _buildTextWithLabel(
+                                          "3/4(R)",
+                                          measurementsController
+                                              .tfShirtRController),
+                                      _buildTextWithLabel(
+                                          "Full",
+                                          measurementsController
+                                              .fullShirtController),
+                                      _buildTextWithLabel(
+                                          "A/h",
+                                          measurementsController
+                                              .ahShirtController),
+                                      _buildTextWithLabel(
+                                          "A",
+                                          measurementsController
+                                              .aShirtController),
+                                      _buildTextWithLabel(
+                                          "D.P.",
+                                          measurementsController
+                                              .dpShirtController),
+                                      _buildTextWithLabel(
+                                          "F.C.",
+                                          measurementsController
+                                              .fcShirtController),
+                                      _buildTextWithLabel(
+                                          "B.C.",
+                                          measurementsController
+                                              .bcShirtController),
+                                      _buildTextWithLabel(
+                                          "N",
+                                          measurementsController
+                                              .nShirtController),
+                                      _buildTextWithLabel(
+                                          "B.N.",
+                                          measurementsController
+                                              .bnShirtController),
+                                      _buildTextWithLabel(
+                                          "CK",
+                                          measurementsController
+                                              .ckShirtController),
+                                      _buildTextWithLabel(
+                                          "Ghera",
+                                          measurementsController
+                                              .gheraShirtController),
+                                    ]),
+                                  ],
+                                ),
+                                Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      _buildTextWithLabel(
-                                          "L",
-                                          measurementsController
-                                              .lPantController),
-                                      _buildTextWithLabel(
-                                          "W",
-                                          measurementsController
-                                              .wPantController),
-                                      _buildTextWithLabel(
-                                          "H",
-                                          measurementsController
-                                              .hPantController),
-                                      _buildTextWithLabel(
-                                          "Th",
-                                          measurementsController
-                                              .thPantController),
-                                      _buildTextWithLabel(
-                                          "K",
-                                          measurementsController
-                                              .kPantController),
-                                      _buildTextWithLabel(
-                                          "Mori",
-                                          measurementsController
-                                              .moriPantController),
-                                      _buildSectionHeading("SALWAR"),
-                                      _buildTextWithLabel(
-                                          "L",
-                                          measurementsController
-                                              .lSalwarController),
-                                      _buildTextWithLabel(
-                                          "M",
-                                          measurementsController
-                                              .mSalwarController),
-                                      _buildTextWithLabel(
-                                          "W",
-                                          measurementsController
-                                              .wSalwarController),
-                                      _buildTextWithLabel(
-                                          "H",
-                                          measurementsController
-                                              .hSalwarController),
-                                      _buildSectionHeading("CHURIDAR"),
-                                      _buildTextWithLabel(
-                                          "L",
-                                          measurementsController
-                                              .lChuridarController),
-                                      _buildTextWithLabel(
-                                          "W",
-                                          measurementsController
-                                              .wChuridarController),
-                                      _buildTextWithLabel(
-                                          "H",
-                                          measurementsController
-                                              .hChuridarController),
-                                      _buildTextWithLabel(
-                                          "Th",
-                                          measurementsController
-                                              .thChuridarController),
-                                      _buildTextWithLabel(
-                                          "K",
-                                          measurementsController
-                                              .kChuridarController),
-                                      _buildTextWithLabel(
-                                          "Mori",
-                                          measurementsController
-                                              .moriChuridarController),
-                                      _buildSectionHeading("Lehnga & Salwar"),
-                                      _buildTextWithLabel(
-                                          "L",
-                                          measurementsController
-                                              .lLehngaController),
-                                      _buildTextWithLabel(
-                                          "W",
-                                          measurementsController
-                                              .wLehngaController),
-                                      _buildTextWithLabel(
-                                          "H",
-                                          measurementsController
-                                              .hLehngaController),
-                                      _buildSectionHeading("Gown or Frock"),
-                                      _buildTextWithLabel(
-                                          "L",
-                                          measurementsController
-                                              .lGownController),
-                                      _buildTextWithLabel(
-                                          "B.L",
-                                          measurementsController
-                                              .blGownController),
-                                    ],
-                                  )
-                                ]),
-                                Column(children: [
-                                  _buildTextWithLabel("L",
-                                      measurementsController.lBlouseController),
-                                  _buildTextWithLabel(
-                                      "D.P.",
-                                      measurementsController
-                                          .dpBlouseController),
-                                  _buildTextWithLabel(
-                                      "U.C.",
-                                      measurementsController
-                                          .ucBlouseController),
-                                  _buildTextWithLabel("C.",
-                                      measurementsController.cBlouseController),
-                                  _buildTextWithLabel("W",
-                                      measurementsController.wBlouseController),
-                                  _buildTextWithLabel(
-                                      "Sh",
-                                      measurementsController
-                                          .shBlouseController),
-                                  _buildTextWithLabel(
-                                      "SI. SM(L)",
-                                      measurementsController
-                                          .slSmBlouseLController),
-                                  _buildTextWithLabel(
-                                      "SI. SM(R)",
-                                      measurementsController
-                                          .slSmBlouseRController),
-                                  _buildTextWithLabel(
-                                      "A(L)",
-                                      measurementsController
-                                          .aBlouseLController),
-                                  _buildTextWithLabel(
-                                      "A(R)",
-                                      measurementsController
-                                          .aBlouseRController),
-                                  _buildTextWithLabel(
-                                      "A/h",
-                                      measurementsController
-                                          .ahBlouseController),
-                                  _buildTextWithLabel(
-                                      "F.C",
-                                      measurementsController
-                                          .fcBlouseController),
-                                  _buildTextWithLabel(
-                                      "B.C",
-                                      measurementsController
-                                          .bcBlouseController),
-                                  _buildTextWithLabel("N",
-                                      measurementsController.nBlouseController),
-                                  _buildTextWithLabel(
-                                      "B.N",
-                                      measurementsController
-                                          .bnBlouseController),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: SizedBox(
-                                      width: MediaQuery.of(context).size.width,
-                                      child: Text(
-                                        "Remark",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.indigo.shade900,
-                                        ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          _buildTextWithLabel(
+                                              "L",
+                                              measurementsController
+                                                  .lPantController),
+                                          _buildTextWithLabel(
+                                              "W",
+                                              measurementsController
+                                                  .wPantController),
+                                          _buildTextWithLabel(
+                                              "H",
+                                              measurementsController
+                                                  .hPantController),
+                                          _buildTextWithLabel(
+                                              "Th",
+                                              measurementsController
+                                                  .thPantController),
+                                          _buildTextWithLabel(
+                                              "K",
+                                              measurementsController
+                                                  .kPantController),
+                                          _buildTextWithLabel(
+                                              "Mori",
+                                              measurementsController
+                                                  .moriPantController),
+                                          _buildSectionHeading("SALWAR"),
+                                          _buildTextWithLabel(
+                                              "L",
+                                              measurementsController
+                                                  .lSalwarController),
+                                          _buildTextWithLabel(
+                                              "M",
+                                              measurementsController
+                                                  .mSalwarController),
+                                          _buildTextWithLabel(
+                                              "W",
+                                              measurementsController
+                                                  .wSalwarController),
+                                          _buildTextWithLabel(
+                                              "H",
+                                              measurementsController
+                                                  .hSalwarController),
+                                        ],
                                       ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: RemarkTextField(),
-                                  )
-                                ]),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          _buildSectionHeading("CHURIDAR"),
+                                          _buildTextWithLabel(
+                                              "L",
+                                              measurementsController
+                                                  .lChuridarController),
+                                          _buildTextWithLabel(
+                                              "W",
+                                              measurementsController
+                                                  .wChuridarController),
+                                          _buildTextWithLabel(
+                                              "H",
+                                              measurementsController
+                                                  .hChuridarController),
+                                          _buildTextWithLabel(
+                                              "Th",
+                                              measurementsController
+                                                  .thChuridarController),
+                                          _buildTextWithLabel(
+                                              "K",
+                                              measurementsController
+                                                  .kChuridarController),
+                                          _buildTextWithLabel(
+                                              "Mori",
+                                              measurementsController
+                                                  .moriChuridarController),
+                                          _buildSectionHeading(
+                                              "Lehnga & Salwar"),
+                                          _buildTextWithLabel(
+                                              "L",
+                                              measurementsController
+                                                  .lLehngaController),
+                                          _buildTextWithLabel(
+                                              "W",
+                                              measurementsController
+                                                  .wLehngaController),
+                                          _buildTextWithLabel(
+                                              "H",
+                                              measurementsController
+                                                  .hLehngaController),
+                                          _buildSectionHeading("Gown or Frock"),
+                                          _buildTextWithLabel(
+                                              "L",
+                                              measurementsController
+                                                  .lGownController),
+                                          _buildTextWithLabel(
+                                              "B.L",
+                                              measurementsController
+                                                  .blGownController),
+                                        ],
+                                      ),
+                                    ]),
+                                Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          _buildTextWithLabel(
+                                              "L",
+                                              measurementsController
+                                                  .lBlouseController),
+                                          _buildTextWithLabel(
+                                              "D.P.",
+                                              measurementsController
+                                                  .dpBlouseController),
+                                          _buildTextWithLabel(
+                                              "U.C.",
+                                              measurementsController
+                                                  .ucBlouseController),
+                                          _buildTextWithLabel(
+                                              "C.",
+                                              measurementsController
+                                                  .cBlouseController),
+                                          _buildTextWithLabel(
+                                              "W",
+                                              measurementsController
+                                                  .wBlouseController),
+                                          _buildTextWithLabel(
+                                              "Sh",
+                                              measurementsController
+                                                  .shBlouseController),
+                                          _buildTextWithLabel(
+                                              "SI. SM(L)",
+                                              measurementsController
+                                                  .slSmBlouseLController),
+                                        ],
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          _buildTextWithLabel(
+                                              "SI. SM(R)",
+                                              measurementsController
+                                                  .slSmBlouseRController),
+                                          _buildTextWithLabel(
+                                              "A(L)",
+                                              measurementsController
+                                                  .aBlouseLController),
+                                          _buildTextWithLabel(
+                                              "A(R)",
+                                              measurementsController
+                                                  .aBlouseRController),
+                                          _buildTextWithLabel(
+                                              "A/h",
+                                              measurementsController
+                                                  .ahBlouseController),
+                                          _buildTextWithLabel(
+                                              "F.C",
+                                              measurementsController
+                                                  .fcBlouseController),
+                                          _buildTextWithLabel(
+                                              "B.C",
+                                              measurementsController
+                                                  .bcBlouseController),
+                                          _buildTextWithLabel(
+                                              "N",
+                                              measurementsController
+                                                  .nBlouseController),
+                                          _buildTextWithLabel(
+                                              "B.N",
+                                              measurementsController
+                                                  .bnBlouseController),
+                                        ],
+                                      ),
+                                    ]),
                               ]),
                             ],
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 20.0),
-                    SizedBox(
-                        height: MediaQuery.of(context).size.height - 100,
-                        child: const PainterPage(
-                          title: '',
-                        ))
                   ],
                 ));
               }
@@ -494,11 +538,11 @@ class _UpdateMeasurementOrderPageState
 
   Widget _buildSectionHeading(String heading) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
       child: Text(
         heading,
         style: TextStyle(
-          fontSize: 20,
+          fontSize: 12,
           fontWeight: FontWeight.bold,
           color: Colors.indigo.shade900,
         ),
@@ -509,9 +553,9 @@ class _UpdateMeasurementOrderPageState
   Widget _buildTextWithLabel(
       String labelText, TextEditingController controller) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      padding: const EdgeInsets.all(6.0),
       child: SizedBox(
-        width: 180,
+        width: 120,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -523,7 +567,8 @@ class _UpdateMeasurementOrderPageState
               ),
             ),
             SizedBox(
-              width: 100,
+              width: 40,
+              height: 15,
               child: TextFormField(
                 controller: controller,
                 // inputFormatters: [DoubleInputFormatter()],
@@ -625,7 +670,7 @@ class _UpdateMeasurementOrderPageState
       await customersMeasurements.doc(measurementId).update(updateData);
 
       // Generate a new document ID
-     // String id = customers.doc().id;
+      // String id = customers.doc().id;
 
       /*  // Upload image to Firebase Storage
       firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
@@ -641,9 +686,7 @@ class _UpdateMeasurementOrderPageState
 
       // Create a new AddCustomerModel object with image URL
 
-
       // Convert AddCustomerModel object to a map
-
 
       setState(() {
         _isLoading = false;
@@ -659,7 +702,6 @@ class _UpdateMeasurementOrderPageState
     }
   }
 }
-
 
 class DoubleInputFormatter extends TextInputFormatter {
   @override
