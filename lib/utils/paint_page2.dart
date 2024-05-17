@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:flutter/foundation.dart';
@@ -9,6 +8,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_drawing_board/flutter_drawing_board.dart';
 import 'package:flutter_drawing_board/paint_contents.dart';
 import 'package:flutter_drawing_board/paint_extension.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/my_provider.dart';
 
 
 Future<ui.Image> _getImage(String path) async {
@@ -194,7 +196,12 @@ class ImageContent extends PaintContent {
 }
 
 class PaintPage2 extends StatefulWidget {
-  const PaintPage2({Key? key}) : super(key: key);
+
+  String oldDrawing;
+  bool isHorizontal = false;
+
+  PaintPage2({Key? key, required this.oldDrawing,required this.isHorizontal}) : super(key: key);
+
 
   @override
   State<PaintPage2> createState() => _PaintPage2State();
@@ -204,6 +211,7 @@ class _PaintPage2State extends State<PaintPage2> {
   /// 绘制控制器
   final DrawingController _drawingController = DrawingController();
 
+  bool isToolsShow = false;
   final TransformationController _transformationController =
   TransformationController();
 
@@ -211,6 +219,12 @@ class _PaintPage2State extends State<PaintPage2> {
   void dispose() {
     _drawingController.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _addTestLine();
   }
 
   /// 获取画板数据 `getImageData()`
@@ -266,9 +280,32 @@ class _PaintPage2State extends State<PaintPage2> {
 
   /// 添加Json测试内容
   void _addTestLine() {
-    _drawingController.addContent(StraightLine.fromJson(_testLine1));
-    _drawingController
-        .addContents(<PaintContent>[StraightLine.fromJson(_testLine2)]);
+    if(widget.oldDrawing != ''){
+      var drawingJson = jsonDecode(widget.oldDrawing);
+      try{
+        for (var json in drawingJson) {
+          if (json['type'] == 'SimpleLine') {
+            _drawingController.addContents(<PaintContent>[SimpleLine.fromJson(json)]);
+          }if (json['type'] == 'StraightLine') {
+            _drawingController.addContents(<PaintContent>[StraightLine.fromJson(json)]);
+          }if (json['type'] == 'Circle') {
+            _drawingController.addContents(<PaintContent>[Circle.fromJson(json)]);
+          }if (json['type'] == 'Rectangle') {
+            _drawingController.addContents(<PaintContent>[Rectangle.fromJson(json)]);
+          }if (json['type'] == 'SmoothLine') {
+            _drawingController.addContents(<PaintContent>[SmoothLine.fromJson(json)]);
+          }if (json['type'] == 'Eraser') {
+            _drawingController.addContents(<PaintContent>[Eraser.fromJson(json)]);
+          }if (json['type'] == 'EmptyContent') {
+            _drawingController.addContents(<PaintContent>[EmptyContent.fromJson(json)]);
+          }
+        }
+      }catch(e){
+
+      }
+    }
+
+     // _drawingController.addContents(<PaintContent>[StraightLine.fromJson(_testLine2)]);
   }
 
   void _restBoard() {
@@ -277,31 +314,58 @@ class _PaintPage2State extends State<PaintPage2> {
 
   @override
   Widget build(BuildContext context) {
+    bool myValue = Provider.of<MyModel>(context).myValue;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.grey,
-      appBar: AppBar(
-        title: const Text('Drawing Test'),
-        systemOverlayStyle: SystemUiOverlayStyle.light,
-        actions: <Widget>[
-          IconButton(
-              icon: const Icon(Icons.line_axis), onPressed: _addTestLine),
-          IconButton(
-              icon: const Icon(Icons.javascript_outlined), onPressed: _getJson),
-          IconButton(icon: const Icon(Icons.check), onPressed: _getImageData),
-          IconButton(
-              icon: const Icon(Icons.restore_page_rounded),
-              onPressed: _restBoard),
-        ],
-      ),
       body: Column(
         children: <Widget>[
+          Container(
+            color: Colors.white,
+            child: Row(
+              children: [
+              /*  IconButton(
+                    icon: const Icon(Icons.line_axis), onPressed: _addTestLine),*/
+               /* IconButton(
+                    icon: const Icon(Icons.javascript_outlined), onPressed: _getJson),*/
+                IconButton(icon: const Icon(Icons.check), onPressed: _getImageData),
+                IconButton(
+                    icon: Icon(!isToolsShow ? Icons.edit_outlined : Icons.edit_off_outlined),
+                    onPressed: (){
+                      setState(() {
+                        isToolsShow = !isToolsShow;
+                      });
+                    }),
+                IconButton(icon: !myValue ? const Icon(Icons.close_fullscreen)  : const Icon(Icons.open_in_new), onPressed: (){
+                  Provider.of<MyModel>(context, listen: false).updateMyValue(!myValue);
+                }),
+              ],
+            ),
+          ),
           Expanded(
             child: LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
                 return DrawingBoard(
-                   boardPanEnabled: false,
-                   boardScaleEnabled: false,
+                   boardPanEnabled: true,
+                   boardScaleEnabled: true,
+                  onPointerMove: (point){
+                    Provider.of<MyModel>(context,listen: false).updateDrawing(jsonEncode(_drawingController.getJsonList()),widget.isHorizontal);
+                  },
+                  onPointerDown: (point) {
+                    Provider.of<MyModel>(context,listen: false).updateDrawing(jsonEncode(_drawingController.getJsonList()),widget.isHorizontal);
+                  },
+                  onPointerUp: (point) {
+                    Provider.of<MyModel>(context,listen: false).updateDrawing(jsonEncode(_drawingController.getJsonList()),widget.isHorizontal);
+                  },
+                  onInteractionStart: (point) {
+                    Provider.of<MyModel>(context,listen: false).updateDrawing(jsonEncode(_drawingController.getJsonList()),widget.isHorizontal);
+                  },
+                  onInteractionUpdate: (point) {
+                    Provider.of<MyModel>(context,listen: false).updateDrawing(jsonEncode(_drawingController.getJsonList()),widget.isHorizontal);
+                  },
+                  onInteractionEnd: (point) {
+                    Provider.of<MyModel>(context,listen: false).updateDrawing(jsonEncode(_drawingController.getJsonList()),widget.isHorizontal);
+                  },
                   transformationController: _transformationController,
                   controller: _drawingController,
                   background: Container(
@@ -309,50 +373,10 @@ class _PaintPage2State extends State<PaintPage2> {
                     height: constraints.maxHeight,
                     color: Colors.white,
                   ),
-                  showDefaultActions: true,
-                  showDefaultTools: true,
+                  showDefaultActions: isToolsShow,
+                  showDefaultTools: isToolsShow,
                   defaultToolsBuilder: (Type t, _) {
-                    return DrawingBoard.defaultTools(t, _drawingController)
-                      ..insert(
-                        1,
-                        DefToolItem(
-                          icon: Icons.change_history_rounded,
-                          isActive: t == Triangle,
-                          onTap: () =>
-                              _drawingController.setPaintContent(Triangle()),
-                        ),
-                      )
-                      ..insert(
-                        2,
-                        DefToolItem(
-                          icon: Icons.image_rounded,
-                          isActive: t == ImageContent,
-                          onTap: () async {
-                            showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (BuildContext c) {
-                                return const Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              },
-                            );
-
-                            try {
-                              _drawingController.setPaintContent(ImageContent(
-                                await _getImage(_imageUrl),
-                                imageUrl: _imageUrl,
-                              ));
-                            } catch (e) {
-                              //
-                            } finally {
-                              if (context.mounted) {
-                                Navigator.pop(context);
-                              }
-                            }
-                          },
-                        ),
-                      );
+                    return DrawingBoard.defaultTools(t, _drawingController);
                   },
                 );
               },

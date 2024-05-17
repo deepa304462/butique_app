@@ -47,7 +47,7 @@ class _AddNewCustomerState extends State<AddNewCustomer> {
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: SizedBox(
-            height: MediaQuery.of(context).size.height * 1.3,
+            height: MediaQuery.of(context).size.height,
             child: Form(
               key: _formKey,
               child: Column(
@@ -140,7 +140,7 @@ class _AddNewCustomerState extends State<AddNewCustomer> {
                       )
                     ],
                   ),
-                  const Spacer(),
+               Spacer(),
                _isLoading? Center(child: CircularProgressIndicator(color: Color(0xff1676F3))):   ElevatedButton(
                     style: const ButtonStyle(
                       backgroundColor: MaterialStatePropertyAll(Color(0xff1676F3)),
@@ -164,6 +164,7 @@ class _AddNewCustomerState extends State<AddNewCustomer> {
                       ),
                     ),
                   ),
+                  Spacer(),
                 ],
               ),
             ),

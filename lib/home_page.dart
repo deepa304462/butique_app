@@ -1,13 +1,9 @@
-
-
-import 'package:butique_app/add_measurement_order_page.dart';
+import 'package:butique_app/measurements/add_measurement_order_page.dart';
 import 'package:butique_app/add_new_customer.dart';
-import 'package:butique_app/utils/update_measurement.dart';
+import 'package:butique_app/measurements/update_measurement.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import 'add_measurment_new.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -17,13 +13,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String searchQuery = '';
 
   @override
   void initState() {
     super.initState();
   }
-
-
 
   final List<String> customerDetailList =
       List.generate(50, (index) => 'Vaibhav $index');
@@ -90,6 +85,11 @@ class _HomePageState extends State<HomePage> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
+                  onChanged: (value) {
+                    setState(() {
+                      searchQuery = value;
+                    });
+                  },
                   decoration: InputDecoration(
                       labelText: "Search your customers",
                       labelStyle: GoogleFonts.poppins(
@@ -122,7 +122,7 @@ class _HomePageState extends State<HomePage> {
             }
 
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator(); // Or any loading indicator
+              return const CircularProgressIndicator(); // Or any loading indicator
             }
 
             final List<DocumentSnapshot> documents =
@@ -135,8 +135,15 @@ class _HomePageState extends State<HomePage> {
               itemBuilder: (context, index) {
                 final isLastItem =
                     index == documents.length - 1; // Corrected index
+                //final chatItem = state.getChatListResponseModel.data![index];
                 final DocumentSnapshot document = documents[index];
                 final data = document.data() as Map<String, dynamic>;
+                if (searchQuery.isNotEmpty &&
+                    !(data['name'] ?? '')
+                        .toLowerCase()
+                        .contains(searchQuery.toLowerCase())) {
+                  return const SizedBox.shrink();
+                }
 
                 return Column(
                   children: [
@@ -151,29 +158,101 @@ class _HomePageState extends State<HomePage> {
                         color: Colors.grey.shade700,
                         fontSize: 16,
                       ),
-                      trailing: Text(data['phone']),
+                      trailing: SizedBox(
+                        width: 200,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(data['phone']),
+                            IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Text("Alert!!!",
+                                                style: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 20,
+                                                    color: Colors.red)),
+                                            content: Text(
+                                                "Are yo sure you want to delete ${data['name']}",
+                                                style: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16,
+                                                    color: Colors.black)),
+                                            actions: [
+                                              Row(
+                                                mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context).pop();
+                                                    },
+                                                    child: Text('Close',style: GoogleFonts.poppins(
+                                                        fontWeight: FontWeight.bold,
+                                                        fontSize: 16,
+                                                        color: Colors.black)),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: ()  {
+                                                      FirebaseFirestore.instance
+                                                          .collection('customers')
+                                                          .doc(document.id)
+                                                          .delete();
+                                                      Navigator.of(context).pop();
+                                                      },
+                                                    child: Text('Delete',style: GoogleFonts.poppins(
+                                                        fontWeight: FontWeight.bold,
+                                                        fontSize: 16,
+                                                        color: Colors.red)),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          );
+                                        });
+
+                                  });
+                                },
+                                icon: Icon(
+                                  Icons.delete,
+                                  color: Color(0xff1676F3),
+                                  size: 35,
+                                ))
+                          ],
+                        ),
+                      ),
                       leadingAndTrailingTextStyle: GoogleFonts.poppins(
                           color: Colors.grey.shade700,
                           fontSize: 16,
                           fontWeight: FontWeight.w500),
-                      onTap: () async  {
+                      onTap: () async {
                         final snapshot = await FirebaseFirestore.instance
-                            .collection("customersMeasurements").where("customerId",isEqualTo: document.id).get();
+                            .collection("customersMeasurements")
+                            .where("customerId", isEqualTo: document.id)
+                            .get();
 
                         if (snapshot.docs.isNotEmpty) {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (_) =>
-                                      UpdateMeasurementOrderPage(document, index, )));
-                        }else{
+                                  builder: (_) => UpdateMeasurementOrderPage(
+                                    true,
+                                        document,
+                                        index,
+                                      )));
+                        } else {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (_) =>
-                                      AddMeasurementOrderPage(document, index)));
+                                  builder: (_) => UpdateMeasurementOrderPage(
+                                    false,
+                                    document,
+                                    index,
+                                  )));
                         }
-
                       },
                     ),
                     if (!isLastItem) const Divider(), // Add a Divider

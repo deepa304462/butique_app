@@ -1,12 +1,14 @@
-import 'package:butique_app/add_measurment_new.dart';
+
 import 'package:butique_app/add_new_customer.dart';
 import 'package:butique_app/pdf_create_ui.dart';
+import 'package:butique_app/providers/my_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 
-import 'add_measurement_order_page.dart';
+import 'measurements/add_measurement_order_page.dart';
 import 'home_page.dart';
 
 Future<void> main() async {
@@ -18,7 +20,11 @@ Future<void> main() async {
           messagingSenderId: "199360755371",
           storageBucket: 'butique-app.appspot.com',
           projectId: "butique-app"));
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (context) => MyModel(),
+    child: const MyApp(),
+  ),);
+
 }
 
 class MyApp extends StatelessWidget {

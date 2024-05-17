@@ -27,14 +27,46 @@ class _PainterPageState extends State<PainterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(
+      /*appBar: AppBar(
         title: Text(widget.title),
         actions: _buildActions(context),
-      ),
+      ),*/
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 10.0),
         child: Column(
           children: [
+            Row(
+              children: [
+                ValueListenableBuilder(
+                  valueListenable: notifier,
+                  builder: (context, value, child) => IconButton(
+                    icon: child as Icon,
+                    tooltip: "Undo",
+                    onPressed: notifier.canUndo ? notifier.undo : null,
+                  ),
+                  child: const Icon(Icons.undo),
+                ),
+                ValueListenableBuilder(
+                  valueListenable: notifier,
+                  builder: (context, value, child) => IconButton(
+                    icon: child as Icon,
+                    tooltip: "Redo",
+                    onPressed: notifier.canRedo ? notifier.redo : null,
+                  ),
+                  child: const Icon(Icons.redo),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.clear),
+                  tooltip: "Clear",
+                  onPressed: notifier.clear,
+                ),
+                IconButton(
+                  icon: const Icon(Icons.image),
+                  tooltip: "Show PNG Image",
+                  onPressed: () => _showImage(context),
+                ),
+              ],
+            ),
             Expanded(
               child: Card(
                 clipBehavior: Clip.hardEdge,

@@ -62,6 +62,8 @@ class AddMeasurementsModel {
   final String? nBlouse;
   final String? bnBlouse;
   final String? remark;
+  final dynamic drawing;
+  final dynamic drawingHorizontal;
 
   AddMeasurementsModel({
     required this.id,
@@ -127,6 +129,8 @@ class AddMeasurementsModel {
     this.nBlouse,
     this.bnBlouse,
     this.remark,
+    this.drawing,
+    this.drawingHorizontal,
   });
 
   Map<String, dynamic> toMap() {
@@ -194,6 +198,8 @@ class AddMeasurementsModel {
       'nBlouse': nBlouse,
       'bnBlouse': bnBlouse,
       'remark': remark,
+      'drawing': drawing,
+      'drawingHorizontal': drawingHorizontal,
     };
   }
 
@@ -262,6 +268,8 @@ class AddMeasurementsModel {
       nBlouse: map['nBlouse'],
       bnBlouse: map['bnBlouse'],
       remark: map['remark'],
+      drawing: map['drawing'],
+      drawingHorizontal: map['drawingHorizontal'],
     );
   }
 }
