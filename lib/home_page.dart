@@ -1,4 +1,3 @@
-import 'package:butique_app/measurements/add_measurement_order_page.dart';
 import 'package:butique_app/add_new_customer.dart';
 import 'package:butique_app/measurements/update_measurement.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -139,9 +138,11 @@ class _HomePageState extends State<HomePage> {
                 final DocumentSnapshot document = documents[index];
                 final data = document.data() as Map<String, dynamic>;
                 if (searchQuery.isNotEmpty &&
-                    !(data['name'] ?? '')
+                    (!(data['name'] ?? '')
                         .toLowerCase()
-                        .contains(searchQuery.toLowerCase())) {
+                        .contains(searchQuery.toLowerCase()) && !(data['phone'] ?? '')
+                        .toLowerCase()
+                        .contains(searchQuery.toLowerCase()))) {
                   return const SizedBox.shrink();
                 }
 

@@ -8,7 +8,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
-import 'measurements/add_measurement_order_page.dart';
 import 'home_page.dart';
 
 Future<void> main() async {

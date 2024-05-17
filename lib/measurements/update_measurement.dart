@@ -265,11 +265,11 @@ class _UpdateMeasurementOrderPageState
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          // Left side image
                           Expanded(
                             child: Column(
                               children: [
                                 Container(
+                                  height: 300,
                                   decoration: BoxDecoration(
                                     border: Border.all(color: Colors.grey),
                                   ),

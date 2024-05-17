@@ -280,6 +280,7 @@ class _PaintPage2State extends State<PaintPage2> {
 
   /// 添加Json测试内容
   void _addTestLine() {
+    _drawingController.setStyle(color: Colors.black);
     if(widget.oldDrawing != ''){
       var drawingJson = jsonDecode(widget.oldDrawing);
       try{

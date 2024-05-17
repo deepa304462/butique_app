@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'models/add_cutomer_model.dart';
@@ -19,158 +20,159 @@ class AddNewCustomer extends StatefulWidget {
 }
 
 class _AddNewCustomerState extends State<AddNewCustomer> {
-  TextEditingController _name = TextEditingController();
-  TextEditingController _mobile = TextEditingController();
-  TextEditingController _address = TextEditingController();
+  final TextEditingController _name = TextEditingController();
+  final TextEditingController _mobile = TextEditingController();
+  final TextEditingController _address = TextEditingController();
   File? _image;
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
-
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.black),
+        resizeToAvoidBottomInset: true,
         backgroundColor: Colors.white,
-        toolbarHeight: 100,
-        title: Text(
-          "Add new customers",
-          style: GoogleFonts.kaiseiTokumin(
-              color: Colors.black, fontSize: 30, fontWeight: FontWeight.w800),
+        appBar: AppBar(
+          iconTheme: const IconThemeData(color: Colors.black),
+          backgroundColor: Colors.white,
+          toolbarHeight: 100,
+          title: Text(
+            "Add new customers",
+            style: GoogleFonts.kaiseiTokumin(
+                color: Colors.black, fontSize: 30, fontWeight: FontWeight.w800),
+          ),
         ),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height,
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  _buildFormFieldWithIcon(
-                    validator: validateName,
-                    controller: _name,
-                    heading: 'Customer Full Name',
-                    icon: Icons.person,
-                    labelText: 'Enter Full Name',
-                  ),
-                  const SizedBox(height: 20.0),
-                  _buildFormFieldWithIcon(
-                    validator: validateMobile,
-                    controller: _mobile,
-                    heading: 'Customer Mobile Number',
-                    icon: Icons.phone,
-                    labelText: "Enter Mobile Number",
-                  ),
-                  const SizedBox(height: 20.0),
-                  _buildFormFieldWithIcon(
-                    validator: validateAddress,
-                    controller: _address,
-                    heading: 'Customer Complete Address',
-                    icon: Icons.location_on,
-                    labelText: "Address",
-                  ),
-                  const SizedBox(height: 20.0),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          _image == null
-                              ? const Text(
-                            "Old Measurement",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                          )
-                              : SizedBox(
-                            height: 400,
-                            width: 400,
-                            child: Image.file(
-                              _image!,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          const SizedBox(width: 2.0), // Adjust spacing as needed
-                          const Text(
-                            '',
-                            style: TextStyle(
-                              color: Colors.red,
-                              fontSize: 20.0, // Adjust font size as needed
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 5.0), // Adjust spacing as needed
-                      ElevatedButton(
-                        style: const ButtonStyle(
-                          backgroundColor: MaterialStatePropertyAll(Color(0xff1676F3)),
-                          fixedSize: MaterialStatePropertyAll(Size(230, 50)),
-                        ),
-                        child: Text(
-                         _image == null? "Upload old measurement":"Change measurement",
-                          style: GoogleFonts.poppins(
-                            color: Colors.white,
-                            fontSize: 14,
-                          ),
-                        ),
-                        onPressed: () {
-                          WidgetsBinding.instance!.addPostFrameCallback((_) {
-                            final RenderBox overlay = Overlay.of(context)!
-                                .context
-                                .findRenderObject() as RenderBox;
-                            final RelativeRect position = RelativeRect.fromSize(
-                              Rect.fromCenter(
-                                center: overlay.size.center(Offset.zero),
-                                width: 0,
-                                height: 0,
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height,
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    _buildFormFieldWithIcon(
+                      isMandatory: true,
+                      validator: validateName,
+                      controller: _name,
+                      heading: 'Customer Full Name',
+                      icon: Icons.person,
+                      labelText: 'Enter Full Name',
+                    ),
+                    const SizedBox(height: 20.0),
+                    _buildFormFieldWithIcon(
+                      isMandatory: true,
+                      validator: validateMobile,
+                      controller: _mobile,
+                      heading: 'Customer Mobile Number',
+                      icon: Icons.phone,
+                      labelText: "Enter Mobile Number",
+                    ),
+                    const SizedBox(height: 20.0),
+                    _buildFormFieldWithIcon(
+                      isMandatory: false,
+                      validator: validateAddress,
+                      controller: _address,
+                      heading: 'Customer Complete Address',
+                      icon: Icons.location_on,
+                      labelText: "Address",
+                    ),
+                    const SizedBox(height: 20.0),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            _image == null
+                                ? const Text(
+                              "Old Measurement",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
                               ),
-                              const Size(0, 0),
-                            );
-                            _showImagePickerOptions(context, position);
-                          });
-                        },
-                      )
-                    ],
-                  ),
-               Spacer(),
-               _isLoading? Center(child: CircularProgressIndicator(color: Color(0xff1676F3))):   ElevatedButton(
-                    style: const ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll(Color(0xff1676F3)),
-                      fixedSize: MaterialStatePropertyAll(Size(330, 50)),
+                            )
+                                : SizedBox(
+                              height: 400,
+                              width: 400,
+                              child: Image.file(
+                                _image!,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            const SizedBox(width: 2.0), // Adjust spacing as needed
+                            const Text(
+                              '',
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 20.0, // Adjust font size as needed
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 5.0), // Adjust spacing as needed
+                        ElevatedButton(
+                          style: const ButtonStyle(
+                            backgroundColor: MaterialStatePropertyAll(Color(0xff1676F3)),
+                            fixedSize: MaterialStatePropertyAll(Size(230, 50)),
+                          ),
+                          child: Text(
+                            _image == null? "Upload old measurement":"Change measurement",
+                            style: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontSize: 14,
+                            ),
+                          ),
+                          onPressed: () {
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              final RenderBox overlay = Overlay.of(context)
+                                  .context
+                                  .findRenderObject() as RenderBox;
+                              final RelativeRect position = RelativeRect.fromSize(
+                                Rect.fromCenter(
+                                  center: overlay.size.center(Offset.zero),
+                                  width: 0,
+                                  height: 0,
+                                ),
+                                const Size(0, 0),
+                              );
+                              _showImagePickerOptions(context, position);
+                            });
+                          },
+                        )
+                      ],
                     ),
-                    onPressed: () {
-                      if(_formKey.currentState!.validate()){
-                        addData();
-                      }else{
-                        Fluttertoast.showToast(msg: "Please fill all the fields",fontSize: 24,backgroundColor: Colors.red);
-                      }
+                    const Spacer(),
+                    _isLoading? const Center(child: CircularProgressIndicator(color: Color(0xff1676F3))):   ElevatedButton(
+                      style: const ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll(Color(0xff1676F3)),
+                        fixedSize: MaterialStatePropertyAll(Size(330, 50)),
+                      ),
+                      onPressed: () {
+                        if(_formKey.currentState!.validate()){
+                          addData();
+                        }else{
+                          Fluttertoast.showToast(msg: "Please fill all the fields",fontSize: 24,backgroundColor: Colors.red);
+                        }
 
-                      //todo implement on tap
-                    },
-                    child: Text(
-                      "Save & Continue",
-                      style: GoogleFonts.poppins(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
+                        //todo implement on tap
+                      },
+                      child: Text(
+                        "Save & Continue",
+                        style: GoogleFonts.poppins(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
-                  ),
-                  Spacer(),
-                ],
+                    const Spacer(),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-      )
+        )
     );
   }
 
@@ -179,6 +181,7 @@ class _AddNewCustomerState extends State<AddNewCustomer> {
     required IconData icon,
     required String heading,
     required TextEditingController controller,
+    required bool isMandatory,
     String? Function(String?)? validator, // Validator function
   }) {
     return Column(
@@ -194,9 +197,9 @@ class _AddNewCustomerState extends State<AddNewCustomer> {
               ),
             ),
             const SizedBox(width: 2.0), // Adjust spacing as needed
-            const Text(
-              '*',
-              style: TextStyle(
+            Text(
+              isMandatory ? '*' : '',
+              style: const TextStyle(
                 color: Colors.red,
                 fontSize: 20.0, // Adjust font size as needed
               ),
@@ -236,9 +239,7 @@ class _AddNewCustomerState extends State<AddNewCustomer> {
   }
 
   String? validateAddress(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter an address';
-    }
+    // Since the address field is optional, return null to indicate no validation error
     return null;
   }
 
@@ -283,42 +284,35 @@ class _AddNewCustomerState extends State<AddNewCustomer> {
         setState(() {
           _isLoading = false;
         });
-        Navigator.push(context, MaterialPageRoute(builder: (_)=>HomePage()));
+        Navigator.push(context, MaterialPageRoute(builder: (_)=>const HomePage()));
 
         print('Data added successfully!');
       });
     } catch (error) {
-        setState(() {
-          _isLoading = false;
-        });
+      setState(() {
+        _isLoading = false;
+      });
       print('Error adding data: $error');
     }
   }
 
-  Future<void> _getImageFromCamera() async {
-    final pickedFile =
-        await ImagePicker.platform.getImage(source: ImageSource.camera);
+  getImage(ImageSource source) async {
+    ImagePicker picker = ImagePicker();
 
-    setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-      } else {
-        print('No image selected.');
-      }
-    });
-  }
+    XFile? image = await picker.pickImage(source: source);
+    if (image != null) {
+      CroppedFile? cropped = await ImageCropper().cropImage(
+          sourcePath: image.path,
+          aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+          compressQuality: 100,
+          maxWidth: 700,
+          maxHeight: 700,
+          compressFormat: ImageCompressFormat.jpg);
 
-  Future<void> _getImageFromGallery() async {
-    final pickedFile =
-        await ImagePicker.platform.getImage(source: ImageSource.gallery);
-
-    setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-      } else {
-        print('No image selected.');
-      }
-    });
+      setState(() {
+        _image = File(cropped!.path);
+      });
+    } else {}
   }
 
   void _showImagePickerOptions(BuildContext context, position) {
@@ -332,7 +326,7 @@ class _AddNewCustomerState extends State<AddNewCustomer> {
             title: const Text('Take Picture'),
             onTap: () {
               Navigator.pop(context);
-              _getImageFromCamera();
+              getImage(ImageSource.camera);
             },
           ),
         ),
@@ -342,7 +336,7 @@ class _AddNewCustomerState extends State<AddNewCustomer> {
             title: const Text('Select from Gallery'),
             onTap: () {
               Navigator.pop(context);
-              _getImageFromGallery();
+              getImage(ImageSource.gallery);
             },
           ),
         ),
