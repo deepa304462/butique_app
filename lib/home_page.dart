@@ -134,7 +134,6 @@ class _HomePageState extends State<HomePage> {
               itemBuilder: (context, index) {
                 final isLastItem =
                     index == documents.length - 1; // Corrected index
-                //final chatItem = state.getChatListResponseModel.data![index];
                 final DocumentSnapshot document = documents[index];
                 final data = document.data() as Map<String, dynamic>;
                 if (searchQuery.isNotEmpty &&

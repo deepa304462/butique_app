@@ -64,6 +64,7 @@ class AddMeasurementsModel {
   final String? remark;
   final dynamic drawing;
   final dynamic drawingHorizontal;
+  final dynamic lastUpdated;
 
   AddMeasurementsModel({
     required this.id,
@@ -131,6 +132,7 @@ class AddMeasurementsModel {
     this.remark,
     this.drawing,
     this.drawingHorizontal,
+    this.lastUpdated,
   });
 
   Map<String, dynamic> toMap() {
@@ -200,6 +202,7 @@ class AddMeasurementsModel {
       'remark': remark,
       'drawing': drawing,
       'drawingHorizontal': drawingHorizontal,
+      'lastUpdated': lastUpdated,
     };
   }
 
@@ -270,6 +273,7 @@ class AddMeasurementsModel {
       remark: map['remark'],
       drawing: map['drawing'],
       drawingHorizontal: map['drawingHorizontal'],
+      lastUpdated: map['lastUpdated'],
     );
   }
 }
