@@ -3,14 +3,14 @@ class AddCustomerModel {
   final String name;
   final String phone;
   final String address;
-  final String oldMeasurement; // New old measurement parameter
+  final String? oldMeasurement; // New old measurement parameter
 
   AddCustomerModel({
     required this.id,
     required this.name,
     required this.phone,
     required this.address,
-    required this.oldMeasurement, // Add old measurement parameter to the constructor
+    this.oldMeasurement, // Add old measurement parameter to the constructor
   });
 
   // Method to convert object to Map

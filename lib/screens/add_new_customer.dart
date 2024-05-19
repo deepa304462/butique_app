@@ -1,5 +1,6 @@
 import 'dart:io';
-import 'package:butique_app/home_page.dart';
+import 'package:butique_app/screens/bottom_navigation.dart';
+import 'package:butique_app/screens/home_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
@@ -10,10 +11,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'models/add_cutomer_model.dart';
+import '../models/add_cutomer_model.dart';
 
 class AddNewCustomer extends StatefulWidget {
-  const AddNewCustomer({super.key});
+  AddNewCustomer( {super.key});
 
   @override
   State<AddNewCustomer> createState() => _AddNewCustomerState();
@@ -42,11 +43,12 @@ class _AddNewCustomerState extends State<AddNewCustomer> {
                 color: Colors.black, fontSize: 30, fontWeight: FontWeight.w800),
           ),
         ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height,
+        body: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 50,top: 20,right: 50),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -86,21 +88,22 @@ class _AddNewCustomerState extends State<AddNewCustomer> {
                           children: [
                             _image == null
                                 ? const Text(
-                              "Old Measurement",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                            )
+                                    "Old Measurement",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    ),
+                                  )
                                 : SizedBox(
-                              height: 400,
-                              width: 400,
-                              child: Image.file(
-                                _image!,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            const SizedBox(width: 2.0), // Adjust spacing as needed
+                                    height: 400,
+                                    width: 400,
+                                    child: Image.file(
+                                      _image!,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                            const SizedBox(
+                                width: 2.0), // Adjust spacing as needed
                             const Text(
                               '',
                               style: TextStyle(
@@ -113,14 +116,17 @@ class _AddNewCustomerState extends State<AddNewCustomer> {
                         const SizedBox(height: 5.0), // Adjust spacing as needed
                         ElevatedButton(
                           style: const ButtonStyle(
-                            backgroundColor: MaterialStatePropertyAll(Color(0xff1676F3)),
-                            fixedSize: MaterialStatePropertyAll(Size(230, 50)),
+                            backgroundColor:
+                                MaterialStatePropertyAll(Color(0xff4A4EBD)),
+                            fixedSize: MaterialStatePropertyAll(Size(300, 50)),
                           ),
                           child: Text(
-                            _image == null? "Upload old measurement":"Change measurement",
+                            _image == null
+                                ? "Upload old measurement"
+                                : "Change measurement",
                             style: GoogleFonts.poppins(
                               color: Colors.white,
-                              fontSize: 14,
+                              fontSize: 18,
                             ),
                           ),
                           onPressed: () {
@@ -143,37 +149,53 @@ class _AddNewCustomerState extends State<AddNewCustomer> {
                       ],
                     ),
                     const Spacer(),
-                    _isLoading? const Center(child: CircularProgressIndicator(color: Color(0xff1676F3))):   ElevatedButton(
-                      style: const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(Color(0xff1676F3)),
-                        fixedSize: MaterialStatePropertyAll(Size(330, 50)),
-                      ),
-                      onPressed: () {
-                        if(_formKey.currentState!.validate()){
-                          addData();
-                        }else{
-                          Fluttertoast.showToast(msg: "Please fill all the fields",fontSize: 24,backgroundColor: Colors.red);
-                        }
+                    _isLoading
+                        ? const Center(
+                            child: CircularProgressIndicator(
+                                color: Color(0xff4A4EBD)))
+                        : ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  const MaterialStatePropertyAll(Color(0xff4A4EBD)),
+                              fixedSize: MaterialStatePropertyAll(Size(
+                                  MediaQuery.of(context).size.width / 1.5, 80)),
+                              shape: MaterialStatePropertyAll(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(6)
+                                )
+                              )
+                            ),
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                addData();
+                              } else {
+                                Fluttertoast.showToast(
+                                    msg: "Please fill all the fields",
+                                    fontSize: 24,
+                                    backgroundColor: Colors.red);
+                              }
 
-                        //todo implement on tap
-                      },
-                      child: Text(
-                        "Save & Continue",
-                        style: GoogleFonts.poppins(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                    const Spacer(),
+                              //todo implement on tap
+                            },
+                            child: Text(
+                              "Save & Continue",
+                              style: GoogleFonts.poppins(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                    const SizedBox(
+                      height: 80,
+                    )
+
                   ],
                 ),
               ),
             ),
           ),
-        )
-    );
+        ));
   }
 
   Widget _buildFormFieldWithIcon({
@@ -251,43 +273,43 @@ class _AddNewCustomerState extends State<AddNewCustomer> {
       FirebaseFirestore firestore = FirebaseFirestore.instance;
       CollectionReference customers = firestore.collection('customers');
 
-      // Generate a new document ID
       String id = customers.doc().id;
 
-      // Upload image to Firebase Storage
-      firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
-          .ref()
-          .child('customer_images')
-          .child('image_$id.jpg'); // Example storage path
+      if (_image != null) {
+        firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
+            .ref()
+            .child('customer_images')
+            .child('image_$id.jpg');
 
-      firebase_storage.UploadTask uploadTask = ref.putFile(_image!); // Assuming _image is the image file
+        firebase_storage.UploadTask uploadTask = ref.putFile(_image!);
 
-      await uploadTask.whenComplete(() async {
-        // Get download URL of the uploaded image
-        String imageUrl = await ref.getDownloadURL();
-
-        // Create a new AddCustomerModel object with image URL
+        await uploadTask.whenComplete(() async {
+          String imageUrl = await ref.getDownloadURL();
+          AddCustomerModel customer = AddCustomerModel(
+            id: id,
+            name: _name.text,
+            phone: _mobile.text,
+            address: _address.text,
+            oldMeasurement: imageUrl,
+          );
+          Map<String, dynamic> newData = customer.toMap();
+          await customers.doc(id).set(newData);
+          _navigateToHomePage();
+          print('Data added successfully!');
+        });
+      } else {
+        // If no image is uploaded, create AddCustomerModel without old measurement
         AddCustomerModel customer = AddCustomerModel(
           id: id,
           name: _name.text,
           phone: _mobile.text,
           address: _address.text,
-          oldMeasurement: imageUrl, // Include image URL
         );
-
-        // Convert AddCustomerModel object to a map
         Map<String, dynamic> newData = customer.toMap();
-
-        // Add data to Firestore
         await customers.doc(id).set(newData);
-
-        setState(() {
-          _isLoading = false;
-        });
-        Navigator.push(context, MaterialPageRoute(builder: (_)=>const HomePage()));
-
-        print('Data added successfully!');
-      });
+        _navigateToHomePage();
+        print('Data added successfully without old measurement!');
+      }
     } catch (error) {
       setState(() {
         _isLoading = false;
@@ -295,6 +317,17 @@ class _AddNewCustomerState extends State<AddNewCustomer> {
       print('Error adding data: $error');
     }
   }
+
+  void _navigateToHomePage() {
+    setState(() {
+      _isLoading = false;
+    });
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) =>  BottomNavScreen()),
+    );
+  }
+
 
   getImage(ImageSource source) async {
     ImagePicker picker = ImagePicker();

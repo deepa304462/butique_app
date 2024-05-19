@@ -101,7 +101,7 @@ class _UpdateMeasurementOrderPageState
         actions: [
           ElevatedButton(
               style: const ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll(Colors.blueAccent)),
+                  backgroundColor: MaterialStatePropertyAll(Color(0xff4A4EBD))),
               onPressed: () async {
                 await screenshotController
                     .capture(delay: const Duration(milliseconds: 10))
@@ -124,15 +124,18 @@ class _UpdateMeasurementOrderPageState
                     color: Colors.white,
                     fontWeight: FontWeight.bold),
               )),
+          SizedBox(
+            width: 8,
+          ),
           _isLoading
               ? const Center(
                   child: CircularProgressIndicator(
-                  color: Colors.blueAccent,
+                  color: Color(0xff4A4EBD),
                 ))
               : ElevatedButton(
                   style: const ButtonStyle(
                       backgroundColor:
-                          MaterialStatePropertyAll(Colors.blueAccent)),
+                          MaterialStatePropertyAll(Color(0xff4A4EBD))),
                   onPressed: () {
                     if (widget.isUpdate) {
                       final id = widget.document['id'];
@@ -172,7 +175,8 @@ class _UpdateMeasurementOrderPageState
 
                       measurementId = measurement.id ?? '';
                       drawing = measurement.drawing ?? '';
-                      lastUpdated = formatTimestamp(measurement.lastUpdated ?? '');
+                      lastUpdated =
+                          formatTimestamp(measurement.lastUpdated ?? '');
                       drawingHorizontal = measurement.drawingHorizontal ?? '';
                       measurementsController.lpShirtController.text =
                           measurement.lpShirt.toString();
@@ -334,16 +338,34 @@ class _UpdateMeasurementOrderPageState
                             Expanded(
                               child: Column(
                                 children: [
-                                  Container(
-                                    height: 300,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.grey),
-                                    ),
-                                    child: Image.network(
-                                      widget.document['old_measurement'],
-                                      fit: BoxFit.fill,
-                                    ),
-                                  ),
+                                  widget.document['old_measurement'] == null
+                                      ? Container(
+                                          height: 300,
+                                          decoration: BoxDecoration(
+                                            border:
+                                                Border.all(color: Colors.grey),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              "No measuremnt available",
+                                              style: GoogleFonts.poppins(
+                                                  fontSize: 20,
+                                                  color: Colors.grey.shade500,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                        )
+                                      : Container(
+                                          height: 300,
+                                          decoration: BoxDecoration(
+                                            border:
+                                                Border.all(color: Colors.grey),
+                                          ),
+                                          child: Image.network(
+                                            widget.document['old_measurement'],
+                                            fit: BoxFit.fill,
+                                          ),
+                                        ),
                                   SizedBox(
                                     width: MediaQuery.of(context).size.width,
                                     height: MediaQuery.of(context).size.height *
@@ -386,11 +408,11 @@ class _UpdateMeasurementOrderPageState
                                                   ]),
                                                   Column(children: [
                                                     _buildSectionHeading(
-                                                        "Pant/Plazo")
+                                                        "Shirt")
                                                   ]),
                                                   Column(children: [
                                                     _buildSectionHeading(
-                                                        "Blouse")
+                                                        "Lehnga & Salwar")
                                                   ]),
                                                 ]),
                                                 TableRow(children: [
@@ -479,18 +501,6 @@ class _UpdateMeasurementOrderPageState
                                                         "N",
                                                         measurementsController
                                                             .nShirtController),
-                                                    _buildTextWithLabel(
-                                                        "B.N.",
-                                                        measurementsController
-                                                            .bnShirtController),
-                                                    _buildTextWithLabel(
-                                                        "CK",
-                                                        measurementsController
-                                                            .ckShirtController),
-                                                    _buildTextWithLabel(
-                                                        "Ghera",
-                                                        measurementsController
-                                                            .gheraShirtController),
                                                   ]),
                                                   Column(children: [
                                                     Column(
@@ -498,6 +508,20 @@ class _UpdateMeasurementOrderPageState
                                                           CrossAxisAlignment
                                                               .start,
                                                       children: [
+                                                        _buildTextWithLabel(
+                                                            "B.N.",
+                                                            measurementsController
+                                                                .bnShirtController),
+                                                        _buildTextWithLabel(
+                                                            "CK",
+                                                            measurementsController
+                                                                .ckShirtController),
+                                                        _buildTextWithLabel(
+                                                            "Ghera",
+                                                            measurementsController
+                                                                .gheraShirtController),
+                                                        _buildSectionHeading(
+                                                            "Pant/Plazo"),
                                                         _buildTextWithLabel(
                                                             "L",
                                                             measurementsController
@@ -566,34 +590,34 @@ class _UpdateMeasurementOrderPageState
                                                             "Mori",
                                                             measurementsController
                                                                 .moriChuridarController),
-                                                        _buildSectionHeading(
-                                                            "Lehnga & Salwar"),
-                                                        _buildTextWithLabel(
-                                                            "L",
-                                                            measurementsController
-                                                                .lLehngaController),
-                                                        _buildTextWithLabel(
-                                                            "W",
-                                                            measurementsController
-                                                                .wLehngaController),
-                                                        _buildTextWithLabel(
-                                                            "H",
-                                                            measurementsController
-                                                                .hLehngaController),
-                                                        _buildSectionHeading(
-                                                            "Gown or Frock"),
-                                                        _buildTextWithLabel(
-                                                            "L",
-                                                            measurementsController
-                                                                .lGownController),
-                                                        _buildTextWithLabel(
-                                                            "B.L",
-                                                            measurementsController
-                                                                .blGownController),
                                                       ],
                                                     )
                                                   ]),
                                                   Column(children: [
+                                                    _buildTextWithLabel(
+                                                        "L",
+                                                        measurementsController
+                                                            .lLehngaController),
+                                                    _buildTextWithLabel(
+                                                        "W",
+                                                        measurementsController
+                                                            .wLehngaController),
+                                                    _buildTextWithLabel(
+                                                        "H",
+                                                        measurementsController
+                                                            .hLehngaController),
+                                                    _buildSectionHeading(
+                                                        "Gown or Frock"),
+                                                    _buildTextWithLabel(
+                                                        "L",
+                                                        measurementsController
+                                                            .lGownController),
+                                                    _buildTextWithLabel(
+                                                        "B.L",
+                                                        measurementsController
+                                                            .blGownController),
+                                                    _buildSectionHeading(
+                                                        "Blouse"),
                                                     _buildTextWithLabel(
                                                         "L",
                                                         measurementsController
@@ -654,36 +678,6 @@ class _UpdateMeasurementOrderPageState
                                                         "B.N",
                                                         measurementsController
                                                             .bnBlouseController),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: SizedBox(
-                                                        width: MediaQuery.of(
-                                                                context)
-                                                            .size
-                                                            .width,
-                                                        child: Text(
-                                                          "Remark",
-                                                          style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color: Colors.indigo
-                                                                .shade900,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: RemarkTextField(
-                                                        remarkController:
-                                                            measurementsController
-                                                                .remarkController,
-                                                      ),
-                                                    )
                                                   ]),
                                                 ]),
                                               ],
@@ -696,15 +690,26 @@ class _UpdateMeasurementOrderPageState
                             ),
                           ],
                         ),
-                        Expanded(
-                          flex: 1,
-                          child: RotatedBox(
-                              quarterTurns: 0,
-                              child: PaintPage2(
-                                isHorizontal: false,
-                                oldDrawing: widget.isUpdate ? drawing : "",
-                              )),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            child: Text(
+                              "Remark",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.indigo.shade900,
+                              ),
+                            ),
+                          ),
                         ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: RemarkTextField(
+                            remarkController:
+                                measurementsController.remarkController,
+                          ),
+                        )
                       ],
                     ),
                   );

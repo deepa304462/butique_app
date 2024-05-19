@@ -1,11 +1,11 @@
-import 'package:butique_app/add_new_customer.dart';
+import 'package:butique_app/screens/add_new_customer.dart';
 import 'package:butique_app/measurements/update_measurement.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+   HomePage( {super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
                 ElevatedButton(
                     style: const ButtonStyle(
                         backgroundColor:
-                            MaterialStatePropertyAll(Color(0xff1676F3)),
+                            MaterialStatePropertyAll(Color(0xff5057DC)),
                         fixedSize: MaterialStatePropertyAll(Size(
                           251,
                           62,
@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (_) => const AddNewCustomer()));
+                              builder: (_) =>  AddNewCustomer()));
                     },
                     child: Row(
                       children: [
@@ -218,7 +218,7 @@ class _HomePageState extends State<HomePage> {
                                 },
                                 icon: Icon(
                                   Icons.delete,
-                                  color: Color(0xff1676F3),
+                                  color: Color(0xff5057DC),
                                   size: 35,
                                 ))
                           ],
